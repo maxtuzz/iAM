@@ -1,0 +1,17 @@
+{
+    "unassigned" : [
+      {
+        "name" : "svn",
+        "id" : "0",
+        "hostname" : "subversion.ac.nz",
+        "username" : "username"
+      },
+      {
+        "name" : "cq5dev",
+        "id" : "1",
+        "hostname" : "cq5dev2.ac.nz",
+        "username" : "username"
+      }
+
+    ]
+}
