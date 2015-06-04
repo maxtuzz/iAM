@@ -17,11 +17,38 @@ class iAM(object):
                 with open('sessions.json') as data:
                     session_list = json.load(data)
 
-                session = session_list["unassigned"][int(sys.argv[1])]["hostname"]
+                session = ""
+
+                try: 
+                	# Load session based on ID parsed as argument
+                	session = session_list["unassigned"][int(sys.argv[1])]["hostname"]
+                except ValueError: 
+                	# Session based on ID not found, assuming name was parsed
+	                if not session: 
+	                	
+	                	for group in session_list.items():
+	                		i = 0
+	                		for entry in group:
+		                		print(entry)
+
+		                		if entry["name"] == sys.argv[1]:
+		                			print("hit!!")
+		                			session = entry["hostname"]
+		                			break
+		                		i += 1
+		                		print(i)
+
+                # Double check session
+                print("Session: " + session)	
+
+                
+
+
 
                 # Connect to server based on ID.
-                self.connect(session)
+                #self.connect(session)
         else:
+        	# Nothing is defined - show help
             print("iAM Help")
 
 # Commands
