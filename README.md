@@ -1,5 +1,7 @@
 # iAM
 A simple, lightweight, SSH session manager tool
+#### Status:
+Undergoing development - not ready for production use
 
 ## Abtract 
 The goal of this application is to first and formost provide more efficient methodologies of managing SSH sessions.
