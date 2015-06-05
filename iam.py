@@ -11,7 +11,7 @@ class iAM(object):
     def main(self):
         if len(sys.argv) > 1:
             if sys.argv == "-a" or sys.argv == "add":
-                # Test server 
+                # Test server
                 self.add("testserver.auckland.ac.nz")
             else:
                 with open('sessions.json') as data:
@@ -19,31 +19,28 @@ class iAM(object):
 
                 session = ""
 
-                try: 
+                try:
                 	# Load session based on ID parsed as argument
                 	session = session_list["unassigned"][int(sys.argv[1])]["hostname"]
-                except ValueError: 
+                except ValueError:
                 	# Session based on ID not found, assuming name was parsed
-	                if not session: 
-	                	
-	                	for group in session_list.items():
-	                		i = 0
-	                		for entry in group:
-		                		print(entry)
+	                if not session:
 
-		                		if entry["name"] == sys.argv[1]:
-		                			print("hit!!")
-		                			session = entry["hostname"]
-		                			break
-		                		i += 1
-		                		print(i)
+	                	for group, entry in session_list.items():
+	                		i = 0
+	                		print(entry)
+
+	                		if entry[i]["name"] == sys.argv[1]:
+	                			print("hit!!")
+	                			session = entry[i]["hostname"]
+	                			break
+                            else:
+                                print("Incrementing i")
+    	                		i += 1
+
 
                 # Double check session
-                print("Session: " + session)	
-
-                
-
-
+                print("Session: " + session)
 
                 # Connect to server based on ID.
                 #self.connect(session)
