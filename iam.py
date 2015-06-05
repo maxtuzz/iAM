@@ -28,8 +28,11 @@ class iAM(object):
                     session = ""
 
                     try:
-                        # Load session based on ID parsed as argument
-                        session = session_list["unassigned"][int(argv[1])]["hostname"]
+                        session_id = int(argv[1])
+                        for group, entry in session_list.items():
+                                for i in range(len(entry)):
+                                    if entry[i]["id"] == str(session_id):
+                                        session = entry[i]["hostname"]
                     except ValueError:
                         # Session based on ID not found, assuming name was parsed
                         if not session:
@@ -38,7 +41,7 @@ class iAM(object):
                                     if entry[i]["name"] == argv[1]:
                                         session = entry[i]["hostname"]
 
-                    # If session is still empty, do a search for it
+                    # If session is still empty, do a search for it. Unless it's an ID.
                     if not session:
                         print("Session not found, did you mean: ")
                         self.search(argv[1])
