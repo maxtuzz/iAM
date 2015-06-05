@@ -15,48 +15,45 @@ class iAM(object):
                 # Test server
                 self.add("testserver.auckland.ac.nz")
             else:
-                with open('sessions.json') as data:
-                    session_list = json.load(data)
-
-                session = ""
-
-                try:
-                    # Load session based on ID parsed as argument
-                    session = session_list["unassigned"][int(sys.argv[1])]["hostname"]
-                except ValueError:
-                    # Session based on ID not found, assuming name was parsed
-                    if not session:
-
-                        for group, entry in session_list.items():
-                            i = 0
-                            print(entry)
-
-                            if entry[i]["name"] == sys.argv[1]:
-                                print("hit!!")
-                                session = entry[i]["hostname"]
-                                break
-                            else:
-                                print("Incrementing i")
-                                i += 1
-
-                # Double check session
-                print("Session: " + session)
-
-                # Connect to server based on ID.
-                # self.connect(session)
+                self.setup_session(sys.argv)
         else:
             # Nothing is defined - show help
             print("iAM Help")
 
-        # Commands
+    # Helper functions
+    def setup_session(self, argv):
+        with open('sessions.json') as data:
+                    session_list = json.load(data)
 
+                    session = ""
+
+                    try:
+                        # Load session based on ID parsed as argument
+                        session = session_list["unassigned"][int(argv[1])]["hostname"]
+                    except ValueError:
+                        # Session based on ID not found, assuming name was parsed
+                        if not session:
+                            for group, entry in session_list.items():
+                                for i in range(len(entry)):
+                                    if entry[i]["name"] == argv[1]:
+                                        session = entry[i]["hostname"]
+
+                    # If session is still empty, do a search for it
+                    if not session:
+                        print("Session not found, did you mean: ")
+                        self.search(argv[1])
+                    else:
+                        # Connect to server based on ID.
+                        self.connect(session)
+
+    # Commands
     def add(self, hostname):
         print("Create a session here")
 
     def remove(self):
         print("Remove a session here")
 
-    def search(self):
+    def search(self, item):
         print("Searching for ")
 
     def connect(self, host):
