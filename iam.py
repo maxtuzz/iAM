@@ -47,8 +47,13 @@ class iAM(object):
                         print("Session not found, did you mean: ")
                         self.search(argv[1])
                     else:
+                        username = None
+
+                        # If custom username specified
+                        if len(argv) > 2:
+                            username = argv[2]
                         # Connect to server based on ID.
-                        self.connect(session)
+                        self.connect(session, username)
 
     # Commands
     def add(self, hostname):
@@ -60,11 +65,13 @@ class iAM(object):
     def search(self, item):
         print("Searching for ")
 
-    def connect(self, host):
-        with open('config.json') as data:
-            config = json.load(data)
-        print("Username = " + config["username"])
-        os.system("ssh " + config["username"] + '@' + host)
+    def connect(self, host, username):
+        if not username:
+            with open('config.json') as data:
+                config = json.load(data)
+                username = config["username"]
+        print("Username = " + username)
+        os.system("ssh " + username + '@' + host)
 
 
 iam = iAM()
