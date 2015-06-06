@@ -9,7 +9,8 @@ import json
 
 class iAM(object):
 
-    def main(self):
+    def start(self):
+        # If there are commands parsed
         if len(sys.argv) > 1:
             if sys.argv == "-a" or sys.argv == "add":
                 # Test server
@@ -60,8 +61,11 @@ class iAM(object):
         print("Searching for ")
 
     def connect(self, host):
-        os.system("ssh " + host)
+        with open('config.json') as data:
+            config = json.load(data)
+        print("Username = " + config["username"])
+        os.system("ssh " + config["username"] + '@' + host)
 
 
 iam = iAM()
-iam.main()
+iam.start()
