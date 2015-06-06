@@ -16,8 +16,16 @@ class iAM(object):
         # If there are commands parsed
         if len(sys.argv) > 1:
             if sys.argv[1] == "-a" or sys.argv[1] == "add":
-                # Test server
-                self.add("testserver.auckland.ac.nz")
+                if len(sys.argv) < 3:
+                    print("Not enough arguments.")
+                else:
+                    try:
+                        group = sys.argv[4]
+                    except IndexError:
+                        # Group not specified
+                        group = "unassigned"
+
+                    self.add(sys.argv[2], sys.argv[3], group, session_list)
             elif sys.argv[1] == "-l" or sys.argv[1] == "list":
                 self.list(session_list, sys.argv)
             else:
@@ -59,8 +67,15 @@ class iAM(object):
             self.connect(session, username)
 
     # Commands
-    def add(self, hostname):
-        print("Create a session here")
+    def add(self, hostname, name, group_name, session_list):
+        host_id = 0
+
+        # First get latest ID
+        for group, entry in session_list.items():
+            for i in range(len(entry)):
+                host_id += 1
+
+        print("ID: " + str(host_id) + ", name: " + name + ", hostname: " + hostname + ", group: " + group_name)
 
     def remove(self):
         print("Remove a session here")
