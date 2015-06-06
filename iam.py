@@ -44,7 +44,6 @@ class iAM(object):
 
                     # If session is still empty, do a search for it. Unless it's an ID.
                     if not session:
-                        print("Searching for " + argv[1])
                         self.search(argv[1], session_list)
                     else:
                         username = None
@@ -63,25 +62,31 @@ class iAM(object):
         print("Remove a session here")
 
     def search(self, item, session_list):
+        print("Searching for '", item, "'")
+
         hits = 0
         for group, entry in session_list.items():
             for i in range(len(entry)):
                 if item in entry[i]["hostname"]:
                     # Increment hits
                     hits += 1
+
                     # Output Search Results
                     print(str(hits) + ": ID: [" + entry[i]["id"]
                           + "],\t Name: [" + entry[i]["name"]
                           + "],\t\t Hostname: [" + entry[i]["hostname"] + "]")
         if hits == 0:
-            print("Cannot find: ", item)
+            print("Cannot find: '", item, "'")
 
     def connect(self, host, username):
         if not username:
             with open('config.json') as data:
                 config = json.load(data)
                 username = config["username"]
+
         print("Username = " + username)
+
+        # Execute ssh session
         os.system("ssh " + username + '@' + host)
 
 

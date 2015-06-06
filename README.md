@@ -29,11 +29,13 @@ $ iam -a astwebrttst01.its.auckland.ac.nz asttest1 AST
 This command follows the following format … 
 [Host address] [Host short name] [Host Group]
 
+Note: Adding function not yet implemented. Servers will have to be manually added via sessions.json in /opt/iam/
+
 So essentially we are asking the iam application to add an SSH host, with a specified name and a specified group we want to add it to. In this case we are adding it to the “AST” group - where all AST based servers will be listed. 
 
 Crap! We forgot the server name already (exactly the problem iAM tries to fix ;-) ). 
 ```
-$ iam -s ‘ast’
+$ iam ast
 
 Searching for ‘ast’ .. 
 [30], asttest1, astwebrttst01.its.auckland.ac.nz
