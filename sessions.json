@@ -7,9 +7,27 @@
       "username" : "username"
     },
     {
-      "name" : "cq5dev",
-      "id" : "1",
-      "hostname" : "cq5dev2.ac.nz",
+      "name" : "git",
+      "id" : "2",
+      "hostname" : "githubdev01.ac.nz",
+      "username" : "username"
+    },
+    {
+      "name" : "stash",
+      "id" : "3",
+      "hostname" : "stashdev01.ac.nz",
+      "username" : "username"
+    },
+    {
+      "name" : "lexi",
+      "id" : "4",
+      "hostname" : "lexicon001dev.ac.nz",
+      "username" : "username"
+    },
+    {
+      "name" : "maxdev01",
+      "id" : "5",
+      "hostname" : "maxtuzzbackenddev01.ac.nz",
       "username" : "username"
     }
   ]

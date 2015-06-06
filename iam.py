@@ -44,8 +44,8 @@ class iAM(object):
 
                     # If session is still empty, do a search for it. Unless it's an ID.
                     if not session:
-                        print("Session not found, did you mean: ")
-                        self.search(argv[1])
+                        print("Searching for " + argv[1])
+                        self.search(argv[1], session_list)
                     else:
                         username = None
 
@@ -62,8 +62,14 @@ class iAM(object):
     def remove(self):
         print("Remove a session here")
 
-    def search(self, item):
-        print("Searching for ")
+    def search(self, item, list):
+        for group, entry in list.items():
+            for i in range(len(entry)):
+                if item in entry[i]["hostname"]:
+                    # Output Search Results
+                    print("ID: [" + entry[i]["id"]
+                          + "],\t Name: [" + entry[i]["name"]
+                          + "],\t Hostname: [" + entry[i]["hostname"] + "]")
 
     def connect(self, host, username):
         if not username:
