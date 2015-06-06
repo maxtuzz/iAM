@@ -8,11 +8,10 @@ import json
 # __author__ = "Max Tuzzolino-Smith"
 
 class iAM(object):
-
     def start(self):
         # Open session config
         with open('sessions.json') as data:
-                    session_list = json.load(data)
+            session_list = json.load(data)
 
         # If there are commands parsed
         if len(sys.argv) > 1:
@@ -20,7 +19,7 @@ class iAM(object):
                 # Test server
                 self.add("testserver.auckland.ac.nz")
             elif sys.argv[1] == "-l" or sys.argv[1] == "list":
-                self.list(session_list)
+                self.list(session_list, sys.argv)
             else:
                 self.setup_session(sys.argv, session_list)
         else:
@@ -35,9 +34,9 @@ class iAM(object):
         try:
             session_id = int(argv[1])
             for group, entry in session_list.items():
-                    for i in range(len(entry)):
-                        if entry[i]["id"] == str(session_id):
-                            session = entry[i]["hostname"]
+                for i in range(len(entry)):
+                    if entry[i]["id"] == str(session_id):
+                        session = entry[i]["hostname"]
         except ValueError:
             # Session based on ID not found, assuming name was parsed
             if not session:
@@ -55,6 +54,7 @@ class iAM(object):
             # If custom username specified
             if len(argv) > 2:
                 username = argv[2]
+
             # Connect to server based on ID.
             self.connect(session, username)
 
@@ -87,24 +87,40 @@ class iAM(object):
             with open('config.json') as data:
                 config = json.load(data)
                 username = config["username"]
-
+        else:
+            print("Connecting with username: " + username)
         # Execute ssh session
         os.system("ssh " + username + '@' + host)
 
-    def list(self, session_list):
+    def list(self, session_list, argv):
         hits = 0
 
-        for group, entry in session_list.items():
-            for i in range(len(entry)):
-                # Increment hits
-                hits += 1
+        # Search by group
+        if len(argv) > 2:
+            for group, entry in session_list.items():
+                for i in range(len(entry)):
+                    if group == argv[2]:
+                        # Increment hits
+                        hits += 1
 
-                # Output Search Results
-                print(str(hits) + ": ID: [" + entry[i]["id"]
-                      + "],\t Name: [" + entry[i]["name"]
-                      + "],\t\t Hostname: [" + entry[i]["hostname"] + "]")
+                        # Output Search Results
+                        print(str(hits) + ": ID: [" + entry[i]["id"]
+                              + "],\t Name: [" + entry[i]["name"]
+                              + "],\t\t Hostname: [" + entry[i]["hostname"] + "]")
+        else:
+            # Search normal
+            for group, entry in session_list.items():
+                for i in range(len(entry)):
+                    # Increment hits
+                    hits += 1
+
+                    # Output Search Results
+                    print(str(hits) + ": ID: [" + entry[i]["id"]
+                          + "],\t Name: [" + entry[i]["name"]
+                          + "],\t\t Hostname: [" + entry[i]["hostname"] + "]")
         if hits == 0:
-            print("Session list empty. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
+            print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
+
 
 iam = iAM()
 iam.start()
