@@ -62,14 +62,19 @@ class iAM(object):
     def remove(self):
         print("Remove a session here")
 
-    def search(self, item, list):
-        for group, entry in list.items():
+    def search(self, item, session_list):
+        hits = 0
+        for group, entry in session_list.items():
             for i in range(len(entry)):
                 if item in entry[i]["hostname"]:
+                    # Increment hits
+                    hits += 1
                     # Output Search Results
-                    print("ID: [" + entry[i]["id"]
+                    print(str(hits) + ": ID: [" + entry[i]["id"]
                           + "],\t Name: [" + entry[i]["name"]
-                          + "],\t Hostname: [" + entry[i]["hostname"] + "]")
+                          + "],\t\t Hostname: [" + entry[i]["hostname"] + "]")
+        if hits == 0:
+            print("Cannot find: ", item)
 
     def connect(self, host, username):
         if not username:

@@ -1,34 +1,41 @@
 {
   "unassigned" : [
     {
-      "name" : "svn",
-      "id" : "0",
-      "hostname" : "subversion.ac.nz",
-      "username" : "username"
-    },
-    {
       "name" : "git",
-      "id" : "2",
-      "hostname" : "githubdev01.ac.nz",
-      "username" : "username"
+      "id" : "0",
+      "hostname" : "githubdev01.ac.nz"
     },
     {
       "name" : "stash",
-      "id" : "3",
-      "hostname" : "stashdev01.ac.nz",
-      "username" : "username"
+      "id" : "1",
+      "hostname" : "stashdev01.ac.nz"
     },
     {
       "name" : "lexi",
-      "id" : "4",
-      "hostname" : "lexicon001dev.ac.nz",
-      "username" : "username"
+      "id" : "2",
+      "hostname" : "lexicon001dev.ac.nz"
     },
     {
       "name" : "maxdev01",
+      "id" : "3",
+      "hostname" : "maxtuzzbackenddev01.ac.nz"
+    }
+  ],
+  "subversion_servers": [
+    {
+      "name" : "svn1",
+      "id" : "4",
+      "hostname" : "subversion1.ac.nz"
+    },
+    {
+      "name" : "svn2",
       "id" : "5",
-      "hostname" : "maxtuzzbackenddev01.ac.nz",
-      "username" : "username"
+      "hostname" : "subversion2.ac.nz"
+    },
+    {
+      "name" : "svn3",
+      "id" : "6",
+      "hostname" : "subversion3.ac.nz"
     }
   ]
 }
