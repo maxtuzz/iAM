@@ -1,13 +1,14 @@
 # iAM
 A simple, lightweight, SSH session manager tool
-#### Status:
-Undergoing development - not ready for production use
 
-## Abtract 
+#### Status:
+Undergoing heavy development. Most of the features work. Use in production environment at your own risk. 
+
+## Abstract 
 The goal of this application is to first and formost provide more efficient methodologies of managing SSH sessions.
 
 
-For those who work in Applications Administration or IT Systems Engineering, as I do, the majority of the time spent is remotely connecting to specific hosts and administrating endless applications across an enterprise. In a full-time position - you will find yourself monitoring a ridiculous amount of SSH sessions. In my team, there are some solutions at play that the other engineers utilize: 1. Look up servers on company wiki and remind yourself all the time. 2. Use a bulky GUI like RemoteNG which works great, but is hard to customize and setup for prefered use. You also have to manually search down a list before your eye catches on the service you are looking for. 3. Compile a list of hosts and search through list for keywords you remember about the host name. 
+For those who work in Applications Administration or IT Systems Engineering, as I do, the majority of the time spent is remotely connecting to specific hosts and administrating endless applications across an enterprise. In a full-time position - you will find yourself monitoring a ridiculous amount of SSH sessions. In my team, there are some solutions at play that the other engineers utilize: 1. Look up servers on company wiki and remind yourself all the time. 2. Use a bulky GUI like RemoteNG which works great, but is hard to customize and setup for preferred use. You also have to manually search down a list before your eye catches on the service you are looking for. 3. Compile a list of hosts and search through list for keywords you remember about the host name. 
 
 iAM seeks to remedy this through providing a easy-to-use, terminal based solution, designed for speed and a low gulf-of-execution. 
 
