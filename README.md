@@ -12,14 +12,15 @@ For those who work in Applications Administration or IT Systems Engineering, as 
 
 iAM seeks to remedy this through providing a easy-to-use, terminal based solution, designed for speed and a low gulf-of-execution. 
 
-## Planned features
+## Features
 * Application invocation through easy ‘iam’ command.
 * Maintainable SSH lists
 * Easy addition/removal of SSH sessions.
-* SSH session groups. I.e. group by DEV, TEST, or PRODUCTION servers. 
+* SSH session groups. i.e. group by DEV, TEST, or PRODUCTION servers. 
 * Easy SSH list search. 
-* Session initiation through ‘iam SSH_ID’.
-* More to think of … 
+* Session initiation through ‘iam SSH_ID’ or 'iam SSH_NAME'.
+* Share external session lists between team members.
+* High customizability in how sessions lists are formatted. 
 
 ## Simple Use-Case
 
@@ -78,4 +79,6 @@ Note: Removing has not yet been implemented and will need to be handled manually
 ```
 iam format
 ``` 
-This will iterate through session list and reformat identifiers so that there are no gaps or anything
+This will iterate through session list and reformat identifiers so that there are no inconsistencies.
+
+Note: format feature not yet implemented.  
