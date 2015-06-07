@@ -22,6 +22,11 @@ iAM seeks to remedy this through providing a easy-to-use, terminal based solutio
 * Share external session lists between team members.
 * High customizability in how sessions lists are formatted. 
 
+#### Soon to come ...
+* Add default user (at the moment you can specify this in config.json). 
+* Remove commands for groups and specific sessions in list. 
+* Format command to relieve identification inconsistencies in manually generated session lists. 
+
 ## Simple Use-Case
 
 I am given a task to do a simple application upgrade of ‘graduate search’ app on astwebrttst01.its.auckland.ac.nz. I have never utilized this server before, as such I will have to add it to my SSH list.
