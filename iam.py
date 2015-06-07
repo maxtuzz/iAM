@@ -75,6 +75,46 @@ class iAM(object):
             for i in range(len(entry)):
                 host_id += 1
 
+        a_dict = None
+
+        # Add to file
+        for group, entry in session_list.items():
+            # Group found
+            if group == group_name:
+                entry.append(
+                    {
+                        'id': str(host_id),
+                        'name': name,
+                        'hostname': hostname
+                    }
+                )
+
+                # Test print
+                # print(json.dumps(entry, indent=4, sort_keys=True))
+                a_dict = {group_name: entry}
+
+                # Break out of loop
+                break
+
+        # No existing group - create a new one
+        if a_dict is None:
+            print("Creating new group")
+
+            a_dict = {
+                group_name: [
+                    {
+                        'id': str(host_id),
+                        'name': name,
+                        'hostname': hostname
+                    }]
+            }
+
+        session_list.update(a_dict)
+
+        with open('sessions.json', 'w') as f:
+            json.dump(session_list, f, indent=4, sort_keys=True)
+
+        print("Entry added:")
         print("ID: " + str(host_id) + ", name: " + name + ", hostname: " + hostname + ", group: " + group_name)
 
     def remove(self):

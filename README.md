@@ -29,8 +29,6 @@ $ iam -a astwebrttst01.its.auckland.ac.nz asttest1 AST
 This command follows the following format … 
 [Host address] [Host short name] [Host Group]
 
-Note: Adding function not yet implemented. Servers will have to be manually added via sessions.json in /opt/iam/
-
 So essentially we are asking the iam application to add an SSH host, with a specified name and a specified group we want to add it to. In this case we are adding it to the “AST” group - where all AST based servers will be listed. 
 
 Crap! We forgot the server name already (exactly the problem iAM tries to fix ;-) ). 
@@ -64,3 +62,19 @@ Lists all sessions.
 $ iam -l ‘group-name’ 
 ```
 Lists all sessions related to group. 
+```
+$ iam -r 'session_name'
+```
+Remove session
+
+```
+$ iam -rg 'group_name'
+```
+Remove group 
+
+Note: Removing has not yet been implemented and will need to be handled manually. 
+
+```
+iam format
+``` 
+This will iterate through session list and reformat identifiers so that there are no gaps or anything
