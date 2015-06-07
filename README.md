@@ -20,7 +20,7 @@ iAM seeks to remedy this through providing a easy-to-use, terminal based solutio
 * Easy SSH list search. 
 * Session initiation through ‘iam SSH_ID’ or 'iam SSH_NAME'.
 * Share external session lists between team members.
-* High customizability in how sessions lists are formatted. 
+* High flexibility in how sessions lists are formatted. 
 
 #### Soon to come ...
 * Add default user (at the moment you can specify this in config.json). 
@@ -49,6 +49,8 @@ $ iam 30
 ```
 (or of course, $ iam asttest1)
 SSH connecting to astwebrttst01.its.auckland.ac.nz... 
+
+You can use $ iam 30 [USERNAME] to connect under a different user other than what is specified in config.json
 ```
 [ SSH SESSION INITIATED ]
 ```
