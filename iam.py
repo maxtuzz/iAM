@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 # Iam Dev Codebase
 
 import sys
@@ -7,19 +7,29 @@ import json
 
 # __author__ = "Max Tuzzolino-Smith"
 
+# Global path variables
+session_path = os.path.dirname(os.path.abspath(__file__)) + "/sessions.json"
+config_path = os.path.dirname(os.path.abspath(__file__)) + "/config.json"
+
 class iAM(object):
+    # ---------------------------
+    # Application Initiation
+    # ---------------------------
     def start(self):
+
         # Open session config
-        with open('sessions.json') as data:
+        with open(session_path) as data:
             session_list = json.load(data)
 
         # If there are commands parsed
         if len(sys.argv) > 1:
+            # Add session to list
             if sys.argv[1] == "-a" or sys.argv[1] == "add":
                 if len(sys.argv) < 3:
                     print("Not enough arguments.")
                 else:
                     try:
+                        # Group is specified
                         group = sys.argv[4]
                     except IndexError:
                         # Group not specified
@@ -27,14 +37,16 @@ class iAM(object):
 
                     self.add(sys.argv[2], sys.argv[3], group, session_list)
             elif sys.argv[1] == "-l" or sys.argv[1] == "list":
+                # List sessions
                 self.list(session_list, sys.argv)
             else:
+                # Normal connect or search
                 self.setup_session(sys.argv, session_list)
         else:
             # Nothing is defined - show help
             print("iAM Help")
 
-    # Helper functions
+    # Session setup
     def setup_session(self, argv, session_list):
 
         session = ""
@@ -66,7 +78,35 @@ class iAM(object):
             # Connect to server based on ID.
             self.connect(session, username)
 
+    # ---------------------------
+    # Application Logic
+    # ---------------------------
+
+    # Connection intiation
+    def connect(self, host, username):
+        if not username:
+            with open(config_path) as data:
+                config = json.load(data)
+                username = config["username"]
+        else:
+            print("Connecting with username: " + username)
+        # Execute ssh session
+        print("ssh " + username + '@' + host)
+        os.system("ssh " + username + '@' + host)
+
+    # Reusable output function used in search algorithm
+    def output_find(self, hits, entry, i):
+        # Output Search Results
+        results = [str(hits) + ":", "ID: [" + entry[i]["id"] + "]", "Name: [" + entry[i]["name"] + "]" , "Hostname: " + entry[i]["hostname"]]
+        print("{0:<0} {1:<10} {2:<20} {3:<10}".format(*results))
+
+     # Connection initiation
+
+    # ---------------------------
     # Commands
+    # ---------------------------
+
+    # Add command
     def add(self, hostname, name, group_name, session_list):
         host_id = 0
 
@@ -111,15 +151,17 @@ class iAM(object):
 
         session_list.update(a_dict)
 
-        with open('sessions.json', 'w') as f:
+        with open(session_path, 'w') as f:
             json.dump(session_list, f, indent=4, sort_keys=True)
 
         print("Entry added:")
         print("ID: " + str(host_id) + ", name: " + name + ", hostname: " + hostname + ", group: " + group_name)
 
+    # Remove command
     def remove(self):
         print("Remove a session here")
 
+    # Search command
     def search(self, item, session_list):
         print("Searching for '", item, "'")
 
@@ -131,51 +173,37 @@ class iAM(object):
                     hits += 1
 
                     # Output Search Results
-                    print(str(hits) + ": ID: [" + entry[i]["id"]
-                          + "],\t Name: [" + entry[i]["name"]
-                          + "],\t\t Hostname: [" + entry[i]["hostname"] + "]")
+                    self.output_find(hits, entry, i)
         if hits == 0:
             print("Cannot find: '", item, "'")
 
-    def connect(self, host, username):
-        if not username:
-            with open('config.json') as data:
-                config = json.load(data)
-                username = config["username"]
-        else:
-            print("Connecting with username: " + username)
-        # Execute ssh session
-        os.system("ssh " + username + '@' + host)
-
+    # List command
     def list(self, session_list, argv):
-        hits = 0
+            hits = 0
 
-        # Search by group
-        if len(argv) > 2:
-            for group, entry in session_list.items():
-                for i in range(len(entry)):
-                    if group == argv[2]:
+            # Search by group
+            if len(argv) > 2:
+                for group, entry in session_list.items():
+                    for i in range(len(entry)):
+                        if group == argv[2]:
+                            # Increment hits
+                            hits += 1
+
+                            # Output Search Results
+                            self.output_find(hits, entry, i)
+            else:
+                # Search normal
+                for group, entry in session_list.items():
+                    for i in range(len(entry)):
                         # Increment hits
                         hits += 1
+                        self.output_find(hits, entry, i)
 
-                        # Output Search Results
-                        print(str(hits) + ": ID: [" + entry[i]["id"]
-                              + "],\t Name: [" + entry[i]["name"]
-                              + "],\t\t Hostname: [" + entry[i]["hostname"] + "]")
-        else:
-            # Search normal
-            for group, entry in session_list.items():
-                for i in range(len(entry)):
-                    # Increment hits
-                    hits += 1
+            if hits == 0:
+                print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
 
-                    # Output Search Results
-                    print(str(hits) + ": ID: [" + entry[i]["id"]
-                          + "],\t Name: [" + entry[i]["name"]
-                          + "],\t\t Hostname: [" + entry[i]["hostname"] + "]")
-        if hits == 0:
-            print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
-
-
+# ---------------------------
+# Application Execution
+# ---------------------------
 iam = iAM()
 iam.start()
