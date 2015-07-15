@@ -11,7 +11,38 @@ import json
 session_path = os.path.dirname(os.path.abspath(__file__)) + "/sessions.json"
 config_path = os.path.dirname(os.path.abspath(__file__)) + "/config.json"
 
-class iAM(object):
+
+class TablePrinter(object):
+    """Print a list of dicts as a table"""
+
+    def __init__(self, fmt, sep=' ', ul=None):
+        """
+        @param fmt: list of tuple(heading, key, width)
+                        heading: str, column label
+                        key: dictionary key to value to print
+                        width: int, column width in chars
+        @param sep: string, separation between columns
+        @param ul: string, character to underline column label, or None for no underlining
+        """
+        super(TablePrinter, self).__init__()
+        self.fmt = str(sep).join('{lb}{0}:{1}{rb}'.format(key, width, lb='{', rb='}') for heading, key, width in fmt)
+        self.head = {key: heading for heading, key, width in fmt}
+        self.ul = {key: str(ul) * width for heading, key, width in fmt} if ul else None
+        self.width = {key: width for heading, key, width in fmt}
+
+    def row(self, data):
+        return self.fmt.format(**{k: str(data.get(k, ''))[:w] for k, w in self.width.iteritems()})
+
+    def __call__(self, dataList):
+        _r = self.row
+        res = [_r(data) for data in dataList]
+        res.insert(0, _r(self.head))
+        if self.ul:
+            res.insert(1, _r(self.ul))
+        return '\n'.join(res)
+
+
+class IAM(object):
     # ---------------------------
     # Application Initiation
     # ---------------------------
@@ -97,10 +128,11 @@ class iAM(object):
     # Reusable output function used in search algorithm
     def output_find(self, hits, entry, i):
         # Output Search Results
-        results = [str(hits) + ":", "ID: [" + entry[i]["id"] + "]", "Name: [" + entry[i]["name"] + "]" , "Hostname: " + entry[i]["hostname"]]
+        results = [str(hits) + ":", "ID: [" + entry[i]["id"] + "]", "Name: [" + entry[i]["name"] + "]",
+                   "Hostname: " + entry[i]["hostname"]]
         print("{0:<0} {1:<10} {2:<20} {3:<10}".format(*results))
 
-     # Connection initiation
+        # Connection initiation
 
     # ---------------------------
     # Commands
@@ -179,31 +211,31 @@ class iAM(object):
 
     # List command
     def list(self, session_list, argv):
-            hits = 0
+        hits = 0
 
-            # Search by group
-            if len(argv) > 2:
-                for group, entry in session_list.items():
-                    for i in range(len(entry)):
-                        if group == argv[2]:
-                            # Increment hits
-                            hits += 1
-
-                            # Output Search Results
-                            self.output_find(hits, entry, i)
-            else:
-                # Search normal
-                for group, entry in session_list.items():
-                    for i in range(len(entry)):
+        # Search by group
+        if len(argv) > 2:
+            for group, entry in session_list.items():
+                for i in range(len(entry)):
+                    if group == argv[2]:
                         # Increment hits
                         hits += 1
-                        self.output_find(hits, entry, i)
 
-            if hits == 0:
-                print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
+                        # Output Search Results
+                        self.output_find(hits, entry, i)
+        else:
+            # Search normal
+            for group, entry in session_list.items():
+                for i in range(len(entry)):
+                    # Increment hits
+                    hits += 1
+                    self.output_find(hits, entry, i)
+
+        if hits == 0:
+            print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
 
 # ---------------------------
 # Application Execution
 # ---------------------------
-iam = iAM()
+iam = IAM()
 iam.start()
