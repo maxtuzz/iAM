@@ -2,45 +2,14 @@
 # Iam Dev Codebase
 
 import sys
-import os
+import subprocess
 import json
 
 # __author__ = "Max Tuzzolino-Smith"
 
 # Global path variables
-session_path = os.path.dirname(os.path.abspath(__file__)) + "/sessions.json"
-config_path = os.path.dirname(os.path.abspath(__file__)) + "/config.json"
-
-
-class TablePrinter(object):
-    """Print a list of dicts as a table"""
-
-    def __init__(self, fmt, sep=' ', ul=None):
-        """
-        @param fmt: list of tuple(heading, key, width)
-                        heading: str, column label
-                        key: dictionary key to value to print
-                        width: int, column width in chars
-        @param sep: string, separation between columns
-        @param ul: string, character to underline column label, or None for no underlining
-        """
-        super(TablePrinter, self).__init__()
-        self.fmt = str(sep).join('{lb}{0}:{1}{rb}'.format(key, width, lb='{', rb='}') for heading, key, width in fmt)
-        self.head = {key: heading for heading, key, width in fmt}
-        self.ul = {key: str(ul) * width for heading, key, width in fmt} if ul else None
-        self.width = {key: width for heading, key, width in fmt}
-
-    def row(self, data):
-        return self.fmt.format(**{k: str(data.get(k, ''))[:w] for k, w in self.width.iteritems()})
-
-    def __call__(self, dataList):
-        _r = self.row
-        res = [_r(data) for data in dataList]
-        res.insert(0, _r(self.head))
-        if self.ul:
-            res.insert(1, _r(self.ul))
-        return '\n'.join(res)
-
+session_path = "/opt/iam/sessions.json"
+config_path = "/opt/iam/config.json"
 
 class IAM(object):
     # ---------------------------
@@ -121,15 +90,26 @@ class IAM(object):
                 username = config["username"]
         else:
             print("Connecting with username: " + username)
+
         # Execute ssh session
-        print("ssh " + username + '@' + host)
-        os.system("ssh " + username + '@' + host)
+        session = "ssh {username}@{host}".format(username=username, host=host)
+
+        # Print session
+        print(session)
+
+        # Connect to session
+        subprocess.Popen(session.split())
 
     # Reusable output function used in search algorithm
     def output_find(self, hits, entry, i):
         # Output Search Results
-        results = [str(hits) + ":", "ID: [" + entry[i]["id"] + "]", "Name: [" + entry[i]["name"] + "]",
-                   "Hostname: " + entry[i]["hostname"]]
+        results = [
+            "{hits}:".format(hits=str(hits)),
+            "ID:[{id}]".format(id=entry[i]["id"]),
+            "Name:{name}".format(name=entry[i]["name"]),
+            "Hostname:{hostname}".format(hostname=entry[i]["hostname"])]
+
+        # Format & print results
         print("{0:<0} {1:<10} {2:<20} {3:<10}".format(*results))
 
         # Connection initiation
@@ -187,7 +167,7 @@ class IAM(object):
             json.dump(session_list, f, indent=4, sort_keys=True)
 
         print("Entry added:")
-        print("ID: " + str(host_id) + ", name: " + name + ", hostname: " + hostname + ", group: " + group_name)
+        print("ID: {id}, Name: {name}, Hostname: {host}, Group: {group}".format(id=host_id, name=name, host=hostname, group=group_name))
 
     # Remove command
     def remove(self):
@@ -195,7 +175,7 @@ class IAM(object):
 
     # Search command
     def search(self, item, session_list):
-        print("Searching for '", item, "'")
+        print("Searching for ' {item} '".format(item=item))
 
         hits = 0
         for group, entry in session_list.items():
@@ -207,7 +187,7 @@ class IAM(object):
                     # Output Search Results
                     self.output_find(hits, entry, i)
         if hits == 0:
-            print("Cannot find: '", item, "'")
+            print("Cannot find: ' {item} '".format(item=item))
 
     # List command
     def list(self, session_list, argv):
@@ -234,6 +214,24 @@ class IAM(object):
         if hits == 0:
             print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
 
+    # Format example
+    # tableData = [['apples', 'oranges', 'cherries', 'bananas'],
+    # ['Alice', 'Bob', 'Carol', 'David',],
+    # ['dogs', 'cats', 'moose', 'goose']]
+
+    def print_table(table):
+        columnwidth = [0] * len(table)
+
+        for w in range(len(table[0])):
+            for l in range(len(table)):
+                if len(table[l][w]) > columnwidth[l]:
+                    columnwidth[l] = len(table[l][w])
+        print(columnwidth)
+
+        for x in range(len(table[0])):
+            for y in range(len(table)):
+                print(table[y][x].rjust(columnwidth[y] + 1), end = '')
+            print()
 # ---------------------------
 # Application Execution
 # ---------------------------
