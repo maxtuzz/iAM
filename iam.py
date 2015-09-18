@@ -8,8 +8,8 @@ import json
 # __author__ = "Max Tuzzolino-Smith"
 
 # Global path variables
-session_path = "/opt/iamutility/sessions.json"
-config_path = "/opt/iamutility/config.json"
+session_path = "/etc/iam/sessions.json"
+config_path = "/etc/iam/config.json"
 
 class IAM(object):
     # ---------------------------
