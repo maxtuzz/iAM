@@ -2,14 +2,14 @@
 # Iam Dev Codebase
 
 import sys
-import subprocess
+import os
 import json
 
 # __author__ = "Max Tuzzolino-Smith"
 
 # Global path variables
-session_path = "/etc/iam/sessions.json"
-config_path = "/etc/iam/config.json"
+session_path = "/opt/iamutility/sessions.json"
+config_path = "/opt/iamutility/config.json"
 
 class IAM(object):
     # ---------------------------
@@ -26,7 +26,7 @@ class IAM(object):
             # Add session to list
             if sys.argv[1] == "-a" or sys.argv[1] == "add":
                 if len(sys.argv) < 3:
-                    print("Not enough arguments.")
+                    print("Not enough arguments")
                 else:
                     try:
                         # Group is specified
@@ -44,7 +44,7 @@ class IAM(object):
                 self.setup_session(sys.argv, session_list)
         else:
             # Nothing is defined - show help
-            print("iAM Help")
+            print(" -- iAM Help --")
 
     # Session setup
     def setup_session(self, argv, session_list):
@@ -98,7 +98,7 @@ class IAM(object):
         print(session)
 
         # Connect to session
-        subprocess.Popen(session.split())
+        os.system(session)
 
     # Reusable output function used in search algorithm
     def output_find(self, hits, entry, i):
