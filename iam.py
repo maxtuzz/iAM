@@ -44,7 +44,7 @@ class IAM(object):
                 self.setup_session(sys.argv, session_list)
         else:
             # Nothing is defined - show help
-            print(" -- iAM Help --")
+            print(" -- iAM going to help --")
 
     # Session setup
     def setup_session(self, argv, session_list):
@@ -84,18 +84,20 @@ class IAM(object):
 
     # Connection intiation
     def connect(self, host, username):
+
+        # If custom username is not specified then load from config
         if not username:
             with open(config_path) as data:
                 config = json.load(data)
                 username = config["username"]
         else:
-            print("Connecting with username: {user}".format(user=username))
+            print("Iam connecting with username: {user}".format(user=username))
 
         # Execute ssh session
         session = "ssh {username}@{host}".format(username=username, host=host)
 
         # Print session
-        print(session)
+        print("Iam now {host}".format(host=host))
 
         # Connect to session
         os.system(session)
@@ -141,8 +143,6 @@ class IAM(object):
                     }
                 )
 
-                # Test print
-                # print(json.dumps(entry, indent=4, sort_keys=True))
                 a_dict = {group_name: entry}
 
                 # Break out of loop
@@ -150,7 +150,7 @@ class IAM(object):
 
         # No existing group - create a new one
         if a_dict is None:
-            print("Creating new group")
+            print("Iam creating a new group")
 
             a_dict = {
                 group_name: [
