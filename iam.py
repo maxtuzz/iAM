@@ -8,8 +8,8 @@ import json
 # __author__ = "Max Tuzzolino-Smith"
 
 # Global path variables
-session_path = "/opt/iam/sessions.json"
-config_path = "/opt/iam/config.json"
+session_path = "/opt/iamutility/sessions.json"
+config_path = "/opt/iamutility/config.json"
 
 class IAM(object):
     # ---------------------------
@@ -89,7 +89,7 @@ class IAM(object):
                 config = json.load(data)
                 username = config["username"]
         else:
-            print("Connecting with username: " + username)
+            print("Connecting with username: {user}".format(user=username))
 
         # Execute ssh session
         session = "ssh {username}@{host}".format(username=username, host=host)
@@ -214,25 +214,7 @@ class IAM(object):
         if hits == 0:
             print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
 
-    # Format example
-    # tableData = [['apples', 'oranges', 'cherries', 'bananas'],
-    # ['Alice', 'Bob', 'Carol', 'David',],
-    # ['dogs', 'cats', 'moose', 'goose']]
-
-    def print_table(table):
-        columnwidth = [0] * len(table)
-
-        for w in range(len(table[0])):
-            for l in range(len(table)):
-                if len(table[l][w]) > columnwidth[l]:
-                    columnwidth[l] = len(table[l][w])
-        print(columnwidth)
-
-        for x in range(len(table[0])):
-            for y in range(len(table)):
-                print(table[y][x].rjust(columnwidth[y] + 1), end = '')
-            print()
-# ---------------------------
+# -----------------------)----
 # Application Execution
 # ---------------------------
 iam = IAM()
