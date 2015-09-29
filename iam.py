@@ -8,8 +8,8 @@ import json
 # __author__ = "Max Tuzzolino-Smith"
 
 # Global path variables
-session_path = "/opt/iamutility/sessions.json"
-config_path = "/opt/iamutility/config.json"
+session_path = "/opt/iam/sessions.json"
+config_path = "/opt/iam/config.json"
 
 class IAM(object):
     # ---------------------------
@@ -44,7 +44,7 @@ class IAM(object):
                 self.setup_session(sys.argv, session_list)
         else:
             # Nothing is defined - show help
-            print(" -- iAM going to help --")
+            print(" -- iAM here to help --")
 
     # Session setup
     def setup_session(self, argv, session_list):
@@ -91,13 +91,13 @@ class IAM(object):
                 config = json.load(data)
                 username = config["username"]
         else:
-            print("Iam connecting with username: {user}".format(user=username))
+            print("iAM connecting with username: {user}".format(user=username))
 
         # Execute ssh session
         session = "ssh {username}@{host}".format(username=username, host=host)
 
         # Print session
-        print("Iam now {host}".format(host=host))
+        print("iAM now {host}".format(host=host))
 
         # Connect to session
         os.system(session)
@@ -106,10 +106,10 @@ class IAM(object):
     def output_find(self, hits, entry, i):
         # Output Search Results
         results = [
-            "{hits}:".format(hits=str(hits)),
-            "ID:[{id}]".format(id=entry[i]["id"]),
-            "Name:{name}".format(name=entry[i]["name"]),
-            "Hostname:{hostname}".format(hostname=entry[i]["hostname"])]
+            "{hits}: ".format(hits=str(hits)),
+            "ID: [{id}]".format(id=entry[i]["id"]),
+            "Name: {name}".format(name=entry[i]["name"]),
+            "Hostname: {hostname}".format(hostname=entry[i]["hostname"])]
 
         # Format & print results
         print("{0:<0} {1:<10} {2:<20} {3:<10}".format(*results))
