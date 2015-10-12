@@ -4,12 +4,22 @@
 import sys
 import os
 import json
+from tabulate import tabulate
 
 # __author__ = "Max Tuzzolino-Smith"
 
 # Global path variables
 session_path = "/opt/iam/sessions.json"
 config_path = "/opt/iam/config.json"
+
+# Headers
+headers = ["ID", "Name", "Hostname"]
+
+# Initial config
+with open(config_path) as data:
+    config = json.load(data)
+    default_username = config["username"]
+    table_style = config["table_style"]
 
 class IAM(object):
     # ---------------------------
@@ -82,14 +92,12 @@ class IAM(object):
     # Application Logic
     # ---------------------------
 
-    # Connection intiation
+    # Connection initiation
     def connect(self, host, username):
 
         # If custom username is not specified then load from config
         if not username:
-            with open(config_path) as data:
-                config = json.load(data)
-                username = config["username"]
+            username = default_username
         else:
             print("iAM connecting with username: {user}".format(user=username))
 
@@ -103,19 +111,9 @@ class IAM(object):
         os.system(session)
 
     # Reusable output function used in search algorithm
-    def output_find(self, hits, entry, i):
-        # Output Search Results
-        results = [
-            "{hits}: ".format(hits=str(hits)),
-            "ID: [{id}]".format(id=entry[i]["id"]),
-            "Name: {name}".format(name=entry[i]["name"]),
-            "Hostname: {hostname}".format(hostname=entry[i]["hostname"])]
-
-        # Format & print results
-        print("{0:<0} {1:<10} {2:<20} {3:<10}".format(*results))
-
-        # Connection initiation
-
+    def output(self, results, hits):
+        print(tabulate(results, headers, tablefmt=table_style))
+        print("\t{hits} results found\n".format(hits=hits))
     # ---------------------------
     # Commands
     # ---------------------------
@@ -178,39 +176,50 @@ class IAM(object):
         print("Searching for ' {item} '".format(item=item))
 
         hits = 0
+        results = []
         for group, entry in session_list.items():
             for i in range(len(entry)):
                 if item in entry[i]["hostname"]:
                     # Increment hits
                     hits += 1
 
-                    # Output Search Results
-                    self.output_find(hits, entry, i)
+                    # Append results
+                    results.append([entry[i]["id"], entry[i]["name"], entry[i]["hostname"]])
+
+        self.output(results, hits)
+
         if hits == 0:
             print("Cannot find: ' {item} '".format(item=item))
 
     # List command
     def list(self, session_list, argv):
+
         hits = 0
+        results = []
 
         # Search by group
         if len(argv) > 2:
+            print("Listing group '{group}':".format(group=argv[2]))
+
             for group, entry in session_list.items():
                 for i in range(len(entry)):
                     if group == argv[2]:
                         # Increment hits
                         hits += 1
 
-                        # Output Search Results
-                        self.output_find(hits, entry, i)
+                        # Append results
+                        results.append([entry[i]["id"], entry[i]["name"], entry[i]["hostname"]])
+            self.output(results, hits)
         else:
-            # Search normal
+            # List everything
             for group, entry in session_list.items():
                 for i in range(len(entry)):
                     # Increment hits
                     hits += 1
-                    self.output_find(hits, entry, i)
 
+                    # Append results
+                    results.append([entry[i]["id"], entry[i]["name"], entry[i]["hostname"]])
+            self.output(results, hits)
         if hits == 0:
             print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
 

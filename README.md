@@ -1,6 +1,9 @@
 # iAM
 A simple, lightweight, SSH session manager tool
 
+#### For now, install tabulate:
+pip install tabulate --user
+
 #### Status:
 Undergoing heavy development. Most of the features work. Use in production environment at your own risk. 
 
