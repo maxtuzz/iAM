@@ -1,11 +1,11 @@
 # iAM
 A simple, lightweight, SSH session manager tool
 
-#### For now, install tabulate:
+#### For now, only dependency is tabulate:
 pip install tabulate --user
 
 #### Status:
-Undergoing heavy development. Most of the features work. Use in production environment at your own risk. 
+Undergoing development. Production ready but some features are missing. Installation has to be done manually at this point in time.
 
 ## Abstract 
 The goal of this application is to first and formost provide more efficient methodologies of managing SSH sessions.
@@ -23,16 +23,32 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 * Easy SSH list search. 
 * Session initiation through ‘iam SSH_ID’ or 'iam SSH_NAME'.
 * Share external session lists between team members.
-* High flexibility in how sessions lists are formatted. 
+* High flexibility in how sessions lists are formatted.
+* Customizable table output
 
 #### Soon to come ...
 * Add default user (at the moment you can specify this in config.json). 
 * 'Remove' commands for groups and specific sessions in list. 
 * 'Format' command to relieve identification inconsistencies in manually generated session lists. 
 
+## Table formats
+Supported table formats are:
+
+* “plain”
+* “simple”
+* “grid”
+* “fancy_grid”
+* “pipe”
+* “orgtbl”
+* “rst”
+* “mediawiki”
+* “html”
+* “latex”
+* “latex_booktabs”
+
 ## Simple Use-Case
 
-I am given a task to do a simple application upgrade of ‘graduate search’ app on astwebrttst01.its.auckland.ac.nz. I have never utilized this server before, as such I will have to add it to my SSH list.
+I am given a task to do a simple application upgrade of ‘graduate search’ app on astwebrttst01.its.auckland.ac.nz. I have never utilized this server before, as such I will have to add it to my host list.
 ```
 $ iam -a astwebrttst01.its.auckland.ac.nz asttest1 AST
 ```
