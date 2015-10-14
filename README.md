@@ -32,12 +32,15 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 * 'Format' command to relieve identification inconsistencies in manually generated session lists. 
 
 ## Table formats
+
+Configured in config.json
+
 Supported table formats are:
 
 * “plain”
 * “simple”
 * “grid”
-* “fancy_grid”
+* “fancy_grid” <-- Default
 * “pipe”
 * “orgtbl”
 * “rst”
