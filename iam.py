@@ -9,8 +9,8 @@ from tabulate import tabulate
 # __author__ = "Max Tuzzolino-Smith"
 
 # Global path variables
-session_path = "/opt/iam/sessions.json"
-config_path = "/opt/iam/config.json"
+session_path = os.path.dirname(os.path.realpath(__file__)) + "/sessions.json"
+config_path = os.path.dirname(os.path.realpath(__file__)) + "/config.json"
 
 # Headers
 headers = ["ID", "Name", "Hostname"]
