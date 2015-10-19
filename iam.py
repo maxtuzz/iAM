@@ -13,7 +13,7 @@ session_path = os.path.dirname(os.path.realpath(__file__)) + "/sessions.json"
 config_path = os.path.dirname(os.path.realpath(__file__)) + "/config.json"
 
 # Headers
-headers = ["ID", "Name", "Hostname"]
+headers = ["ID", "Alias", "Hostname"]
 
 # Initial config
 with open(config_path) as data:
@@ -55,6 +55,8 @@ class IAM(object):
         else:
             # Nothing is defined - show help
             print(" -- iAM here to help --")
+
+        
 
     # Session setup
     def setup_session(self, argv, session_list):
@@ -112,6 +114,9 @@ class IAM(object):
 
     # Reusable output function used in search algorithm
     def output(self, results, hits):
+        # Sort by name
+        results = sorted(results, key=lambda entry: entry[1])
+
         print(tabulate(results, headers, tablefmt=table_style))
         print("\t{hits} results found\n".format(hits=hits))
     # ---------------------------
@@ -148,7 +153,7 @@ class IAM(object):
 
         # No existing group - create a new one
         if a_dict is None:
-            print("Iam creating a new group")
+            print("iAM creating a new group")
 
             a_dict = {
                 group_name: [
@@ -226,5 +231,6 @@ class IAM(object):
 # -----------------------)----
 # Application Execution
 # ---------------------------
-iam = IAM()
-iam.start()
+if __name__ == '__main__':
+    iam = IAM()
+    iam.start()
