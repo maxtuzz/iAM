@@ -2,7 +2,10 @@
 A simple, lightweight, SSH session manager tool
 
 #### For now, only dependency is tabulate:
-pip install tabulate --user
+`sudo pip install tabulate`
+
+You may need to specify which Python3.x version you want to run with depending on your version of Pip. 
+For instance, pip3 defaults to Python3.5 - so this may need to be specified in source header at least until some VirtualEnv stuff is set up.
 
 #### Status:
 Undergoing development. Production ready but some features are missing. Installation has to be done manually at this point in time.

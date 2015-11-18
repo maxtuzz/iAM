@@ -56,8 +56,6 @@ class IAM(object):
             # Nothing is defined - show help
             print(" -- iAM here to help --")
 
-        
-
     # Session setup
     def setup_session(self, argv, session_list):
 
@@ -119,6 +117,7 @@ class IAM(object):
 
         print(tabulate(results, headers, tablefmt=table_style))
         print("\t{hits} results found\n".format(hits=hits))
+
     # ---------------------------
     # Commands
     # ---------------------------
