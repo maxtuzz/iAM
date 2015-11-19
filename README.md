@@ -110,6 +110,5 @@ Note: Removing has not yet been implemented and will need to be handled manually
 ```
 iam format
 ``` 
-This will iterate through session list and reformat identifiers so that there are no inconsistencies.
-
-Note: format feature not yet implemented.  
+This will iterate through session list and reformat identifiers so that there are no inconsistencies. Once 'remove' command
+is implemented, this will run automatically to reindex identifiers. 
