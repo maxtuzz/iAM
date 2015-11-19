@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3.5
 # Iam Dev Codebase
 
 import sys
@@ -22,9 +22,11 @@ with open(config_path) as data:
     table_style = config["table_style"]
 
 class IAM(object):
+
     # ---------------------------
     # Application Initiation
     # ---------------------------
+
     def start(self):
 
         # Open session config
@@ -49,12 +51,15 @@ class IAM(object):
             elif sys.argv[1] == "-l" or sys.argv[1] == "list":
                 # List sessions
                 self.list(session_list, sys.argv)
+            elif sys.argv[1] == "-f" or "format":
+                self.format(session_list)
             else:
                 # Normal connect or search
                 self.setup_session(sys.argv, session_list)
         else:
             # Nothing is defined - show help
             print(" -- iAM here to help --")
+            print(session_list)
 
     # Session setup
     def setup_session(self, argv, session_list):
@@ -227,9 +232,27 @@ class IAM(object):
         if hits == 0:
             print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
 
-# -----------------------)----
+    # Format command
+    def format(self, session_list):
+        hits = 0
+
+        # For every entry, increment and set id
+        for group, entry in session_list.items():
+            for i in range(len(entry)):
+
+                # Set id
+                entry[i]["id"] = str(hits)
+
+                # Increment hits
+                hits += 1
+
+        with open(session_path, 'w') as f:
+           json.dump(session_list, f, indent=4, sort_keys=True)
+
+# ---------------------------
 # Application Execution
 # ---------------------------
+
 if __name__ == '__main__':
     iam = IAM()
     iam.start()

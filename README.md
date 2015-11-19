@@ -32,7 +32,6 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 #### Soon to come ...
 * Add default user (at the moment you can specify this in config.json). 
 * 'Remove' commands for groups and specific sessions in list. 
-* 'Format' command to relieve identification inconsistencies in manually generated session lists. 
 
 ## Table formats
 
