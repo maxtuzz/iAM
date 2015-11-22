@@ -8,15 +8,31 @@ You may need to specify which Python3.x version you want to run with depending o
 For instance, pip3 defaults to Python3.5 - so this may need to be specified in source header at least until some VirtualEnv stuff is set up.
 
 #### Status:
-Undergoing development. Production ready but some features are missing. Installation has to be done manually at this point in time.
+Late development. Nearing feature completion. 
 
 ## Abstract 
 The goal of this application is to first and formost provide more efficient methodologies of managing SSH sessions.
 
-
 For those working in administration, a lot of time spent is remotely connecting to specific hosts and administrating endless applications across an Enterprise.There are some solutions at play that others utilize: 1. Look up servers on company wiki and remind yourself all the time. 2. Use a bulky GUI like RemoteNG which works great, but is hard to customize and setup for preferred use. You also have to manually search down a list before your eye catches on the service you are looking for. 3. Compile a list of hosts and search through list for keywords you remember about the host name or 4. Ctrl + R and search previous sessions from terminal history. 
 
 iAM seeks to remedy this through providing a easy-to-use, terminal-based solution, designed for speed and a low gulf-of-execution. 
+
+## Quick start from clone
+
+### Linux/MacOS:
+1. Clone environment
+    * $ git clone .../iam.git
+2. Move environment to /opt/
+    * $ sudo cp -r iAM /opt
+4. Make yourself the owner of files
+    * $ sudo chown $USER:$USER /opt/iAM/*
+5. Symlink over to /usr/local/bin
+    * $ sudo ln -s /opt/iAM/iam.py /usr/local/bin
+6. Run anywhere from a terminal
+
+### Windows 
+1. Install iAM to Program Files or anywhere convenient
+2. Add iam directory to your PATH
 
 ## Features
 * Application invocation through easy ‘iam’ command.
@@ -30,7 +46,6 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 * Customizable table output
 
 #### Soon to come ...
-* Add default user (at the moment you can specify this in config.json). 
 * 'Remove' commands for groups and specific sessions in list. 
 
 ## Table formats
@@ -58,7 +73,7 @@ I am given a task to do a simple application upgrade of ‘graduate search’ ap
 $ iam -a astwebrttst01.its.auckland.ac.nz asttest1 AST
 ```
 This command follows the following format … 
-[Host address] [Host short name] [Host Group]
+[Host address] [Host short name (alias)] [Host Group]
 
 So essentially we are asking the iam application to add an SSH host, with a specified name and a specified group we want to add it to. In this case we are adding it to the “AST” group - where all AST based servers will be listed. 
 
@@ -84,24 +99,42 @@ We can then invoke iam [ID] to start a session with the address linked to that i
 
 From here on out, all I have to do is memorize the ID, or name of server to connect directly to it. Of course this isn’t ideal, so we can just do our fast search whenever we want.
 
+### Configuring iAM
 
-### Other Commands... 
-Other commands:
+To set your default username:
+
+```
+$ iam config user [username]
+```
+
+To set table style:
+
+```
+$ iam config table [style]
+```
+
+### General Commands
+
+```
+$ iam [id] or [alias]
+```
+Connect to session
+
 ```
 $ iam -l 
 ```
 Lists all sessions. 
 ```
-$ iam -l ‘group-name’ 
+$ iam -l [group-name] 
 ```
 Lists all sessions related to group. 
 ```
-$ iam -r 'session_name'
+$ iam -r [session_name]
 ```
 Remove session
 
 ```
-$ iam -rg 'group_name'
+$ iam -rg [group_name]
 ```
 Remove group 
 
