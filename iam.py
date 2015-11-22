@@ -1,12 +1,16 @@
 #!/usr/bin/python3.5
-# Iam Dev Codebase
+
+# -------------------------------------------------
+# iAM - The Simple and Speedy SSH Session Manager
+# Designed and developed by Max Tuzzolino-Smith
+# -------------------------------------------------
+
+# __author__ = "Max Tuzzolino-Smith"
 
 import sys
 import os
 import json
 from tabulate import tabulate
-
-# __author__ = "Max Tuzzolino-Smith"
 
 # Global path variables
 session_path = os.path.dirname(os.path.realpath(__file__)) + "/sessions.json"
@@ -19,12 +23,17 @@ headers = ["ID", "Alias", "Hostname"]
 with open(config_path) as data:
     config = json.load(data)
     default_username = config["username"]
-    table_style = config["table_style"]
+    default_table_style = config["table_style"]
+
 
 class IAM(object):
-
     # ---------------------------
     # Application Initiation
+    #
+    # ` argv[1] = command // - config
+    # ` argv[2] = parameter 1 // - user/table
+    # ` argv[3] = parameter 2 // - "username123"
+    # ` argv[4] = ... etc.
     # ---------------------------
 
     def start(self):
@@ -37,8 +46,8 @@ class IAM(object):
         if len(sys.argv) > 1:
             # Add session to list
             if sys.argv[1] == "-a" or sys.argv[1] == "add":
-                if len(sys.argv) < 3:
-                    print("Not enough arguments")
+                if len(sys.argv) < 4:
+                    print("Please include [hostname] [alias] and optional [group]")
                 else:
                     try:
                         # Group is specified
@@ -47,12 +56,15 @@ class IAM(object):
                         # Group not specified
                         group = "unassigned"
 
+                    # Add [hostname] [alias] [group] to session list
                     self.add(sys.argv[2], sys.argv[3], group, session_list)
             elif sys.argv[1] == "-l" or sys.argv[1] == "list":
                 # List sessions
                 self.list(session_list, sys.argv)
-            elif sys.argv[1] == "-f" or "format":
+            elif sys.argv[1] == "-f" or sys.argv[1] == "format":
                 self.format(session_list)
+            elif sys.argv[1] == "-c" or sys.argv[1] == "config":
+                self.config(sys.argv)
             else:
                 # Normal connect or search
                 self.setup_session(sys.argv, session_list)
@@ -120,7 +132,7 @@ class IAM(object):
         # Sort by name
         results = sorted(results, key=lambda entry: entry[1])
 
-        print(tabulate(results, headers, tablefmt=table_style))
+        print(tabulate(results, headers, tablefmt=default_table_style))
         print("\t{hits} results found\n".format(hits=hits))
 
     # ---------------------------
@@ -174,7 +186,8 @@ class IAM(object):
             json.dump(session_list, f, indent=4, sort_keys=True)
 
         print("Entry added:")
-        print("ID: {id}, Name: {name}, Hostname: {host}, Group: {group}".format(id=host_id, name=name, host=hostname, group=group_name))
+        print("ID: {id}, Name: {name}, Hostname: {host}, Group: {group}".format(id=host_id, name=name, host=hostname,
+                                                                                group=group_name))
 
     # Remove command
     def remove(self):
@@ -239,7 +252,6 @@ class IAM(object):
         # For every entry, increment and set id
         for group, entry in session_list.items():
             for i in range(len(entry)):
-
                 # Set id
                 entry[i]["id"] = str(hits)
 
@@ -247,7 +259,48 @@ class IAM(object):
                 hits += 1
 
         with open(session_path, 'w') as f:
-           json.dump(session_list, f, indent=4, sort_keys=True)
+            json.dump(session_list, f, indent=4, sort_keys=True)
+
+    # Config command
+    def config(self, args):
+        # Set default properties
+        username = default_username
+        table = default_table_style
+
+        # Set username
+        if len(args) >2:
+            if args[2] == "user":
+                print("hit")
+                if len(args) > 3:
+                    username = args[3].strip("\"")
+                else:
+                    print("Please provide a username")
+
+            # Set table style
+            if args[2] == "table":
+                if len(args) > 3:
+                    table = args[3].strip("\"")
+                else:
+                    print("Please choose one of the following tables and run $ iam table [table_name]:\
+                        \n\t* plain \
+                        \n\t* simple\
+                        \n\t* grid\
+                        \n\t* fancy_grid\
+                        \n\t* pipe\
+                        \n\t* orgtbl\
+                        \n\t* rst\
+                        \n\t* mediawiki\
+                        \n\t* html\
+                        \n\t* latex\
+                        \n\t* latex_booktabs")
+
+            # Set configuration properties
+            config["username"] = username
+            config["table_style"] = table
+
+            # Write to config
+            with open(config_path, 'w') as f:
+                json.dump(config, f, indent=4, sort_keys=True)
 
 # ---------------------------
 # Application Execution
