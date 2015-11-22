@@ -21,13 +21,13 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 
 ##### Linux/MacOS:
 1. Clone environment
-    * $ git clone .../iam.git
+    * `$ git clone .../iam.git`
 2. Move environment to /opt/
-    * $ sudo cp -r iAM /opt
+    * `$ sudo cp -r iAM /opt`
 4. Make yourself the owner of files
-    * $ sudo chown $USER:$USER /opt/iAM/*
+    * `$ sudo chown $USER:$USER /opt/iAM/*`
 5. Symlink over to /usr/local/bin
-    * $ sudo ln -s /opt/iAM/iam.py /usr/local/bin
+    * `$ sudo ln -s /opt/iAM/iam.py /usr/local/bin`
 6. Run anywhere from a terminal
 
 ##### Windows 
