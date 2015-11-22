@@ -19,7 +19,7 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 
 ## Quick start from clone
 
-### Linux/MacOS:
+##### Linux/MacOS:
 1. Clone environment
     * $ git clone .../iam.git
 2. Move environment to /opt/
@@ -30,7 +30,7 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
     * $ sudo ln -s /opt/iAM/iam.py /usr/local/bin
 6. Run anywhere from a terminal
 
-### Windows 
+##### Windows 
 1. Install iAM to Program Files or anywhere convenient
 2. Add iam directory to your PATH
 
