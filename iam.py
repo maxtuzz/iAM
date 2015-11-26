@@ -71,7 +71,6 @@ class IAM(object):
         else:
             # Nothing is defined - show help
             print(" -- iAM here to help --")
-            print(session_list)
 
     # Session setup
     def setup_session(self, argv, session_list):
