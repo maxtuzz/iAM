@@ -62,8 +62,10 @@ class IAM(object):
                 # List sessions
                 self.list(session_list, sys.argv)
             elif sys.argv[1] == "-f" or sys.argv[1] == "format":
+                # Format identifiers
                 self.format(session_list)
             elif sys.argv[1] == "-c" or sys.argv[1] == "config":
+                # Set configurations
                 self.config(sys.argv)
             else:
                 # Normal connect or search
@@ -266,10 +268,9 @@ class IAM(object):
         username = default_username
         table = default_table_style
 
-        # Set username
         if len(args) >2:
+            # Set username
             if args[2] == "user":
-                print("hit")
                 if len(args) > 3:
                     username = args[3].strip("\"")
                 else:
