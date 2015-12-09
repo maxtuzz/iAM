@@ -13,17 +13,17 @@ import json
 from tabulate import tabulate
 
 # Global path variables
-session_path = os.path.dirname(os.path.realpath(__file__)) + "/sessions.json"
-config_path = os.path.dirname(os.path.realpath(__file__)) + "/config.json"
+SESSION_PATH = os.path.dirname(os.path.realpath(__file__)) + "/sessions.json"
+CONFIG_PATH = os.path.dirname(os.path.realpath(__file__)) + "/config.json"
 
 # Headers
-headers = ["ID", "Alias", "Hostname"]
+HEADERS = ["ID", "Alias", "Hostname"]
 
 # Initial config
-with open(config_path) as data:
-    config = json.load(data)
-    default_username = config["username"]
-    default_table_style = config["table_style"]
+with open(CONFIG_PATH) as data:
+    CONFIG = json.load(data)
+    DEF_USERNAME = CONFIG["username"]
+    DEF_TABLE_STYLE = CONFIG["table_style"]
 
 
 class IAM(object):
@@ -39,7 +39,7 @@ class IAM(object):
     def start(self):
 
         # Open session config
-        with open(session_path) as data:
+        with open(SESSION_PATH) as data:
             session_list = json.load(data)
 
         # If there are commands parsed
@@ -115,7 +115,7 @@ class IAM(object):
 
         # If custom username is not specified then load from config
         if not username:
-            username = default_username
+            username = DEF_USERNAME
         else:
             print("iAM connecting with username: {user}".format(user=username))
 
@@ -133,7 +133,7 @@ class IAM(object):
         # Sort by name
         results = sorted(results, key=lambda entry: entry[1])
 
-        print(tabulate(results, headers, tablefmt=default_table_style))
+        print(tabulate(results, HEADERS, tablefmt=DEF_TABLE_STYLE))
         print("\t{hits} results found\n".format(hits=hits))
 
     # ---------------------------
@@ -183,7 +183,7 @@ class IAM(object):
 
         session_list.update(a_dict)
 
-        with open(session_path, 'w') as f:
+        with open(SESSION_PATH, 'w') as f:
             json.dump(session_list, f, indent=4, sort_keys=True)
 
         print("Entry added:")
@@ -259,14 +259,14 @@ class IAM(object):
                 # Increment hits
                 hits += 1
 
-        with open(session_path, 'w') as f:
+        with open(SESSION_PATH, 'w') as f:
             json.dump(session_list, f, indent=4, sort_keys=True)
 
     # Config command
     def config(self, args):
         # Set default properties
-        username = default_username
-        table = default_table_style
+        username = DEF_USERNAME
+        table = DEF_TABLE_STYLE
 
         if len(args) >2:
             # Set username
@@ -295,12 +295,12 @@ class IAM(object):
                         \n\t* latex_booktabs")
 
             # Set configuration properties
-            config["username"] = username
-            config["table_style"] = table
+            CONFIG["username"] = username
+            CONFIG["table_style"] = table
 
             # Write to config
-            with open(config_path, 'w') as f:
-                json.dump(config, f, indent=4, sort_keys=True)
+            with open(CONFIG_PATH, 'w') as f:
+                json.dump(CONFIG, f, indent=4, sort_keys=True)
 
 # ---------------------------
 # Application Execution
