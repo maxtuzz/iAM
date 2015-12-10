@@ -79,8 +79,10 @@ class IAM(object):
 
         session = ""
 
+
         try:
             session_id = int(argv[1])
+
             for group, entry in session_list.items():
                 for i in range(len(entry)):
                     if entry[i]["id"] == str(session_id):
@@ -98,20 +100,31 @@ class IAM(object):
             self.search(argv[1], session_list)
         else:
             username = None
+            protocol = None
 
-            # If custom username specified
+            # If custom username or protocol (or both) specified
             if len(argv) > 2:
-                username = argv[2]
+                if '-' not in argv[2]:
+                    username = argv[2]
+                else:
+                    if argv[2] == "-cid":
+                        protocol = "ssh-copy-id"
+                    else:
+                        print("Protocol {} not recognized".format(argv[2]))
+                        sys.exit()
+                    # Protocol and username specified
+                    if len(argv) > 3:
+                        username = argv[3]
 
             # Connect to server based on ID.
-            self.connect(session, username)
+            self.connect(session, username, protocol)
 
     # ---------------------------
     # Application Logic
     # ---------------------------
 
     # Connection initiation
-    def connect(self, host, username):
+    def connect(self, host, username, protocol):
 
         # If custom username is not specified then load from config
         if not username:
@@ -119,8 +132,15 @@ class IAM(object):
         else:
             print("iAM connecting with username: {user}".format(user=username))
 
+        # Protocol for connecting
+        if not protocol:
+            # Default protocol is SSH
+            protocol = "ssh"
+        else:
+            print("iAM copying SSH public key")
+
         # Execute ssh session
-        session = "ssh {username}@{host}".format(username=username, host=host)
+        session = "{protocol} {username}@{host}".format(protocol=protocol, username=username, host=host)
 
         # Print session
         print("iAM now {host}".format(host=host))
@@ -246,7 +266,7 @@ class IAM(object):
         if hits == 0:
             print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
 
-    # Format command
+    # Format command (reindexes identifiers)
     def format(self, session_list):
         hits = 0
 

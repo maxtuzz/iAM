@@ -8,7 +8,15 @@ You may need to specify which Python3.x version you want to run with depending o
 For instance, pip3 defaults to Python3.5 - so this may need to be specified in source header at least until some VirtualEnv stuff is set up.
 
 #### Status:
-Late development. Nearing feature completion. 
+Development progressing as things that I think can be improved are added.
+
+What needs to be done: 
+* More customization - full path to `ssh` and `ssh-copy-id` need to be configurable in properties in case these protocols aren't included within a users path correctly
+* Config needs to be formatted in standard ini-style using configparser instead of current json format for readability
+* Remove by session command
+* Remove by group command
+* Testing and bugfixes
+
 
 ## Abstract 
 The goal of this application is to first and formost provide more efficient methodologies of managing SSH sessions.
@@ -40,10 +48,11 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 * Easy addition/removal of SSH sessions.
 * SSH session groups. i.e. group by DEV, TEST, or PRODUCTION servers. 
 * Easy SSH list search. 
-* Session initiation through ‘iam SSH_ID’ or 'iam SSH_NAME'.
+* Session initiation through ‘iam [id]’ or 'iam [alias]'.
 * Share external session lists between team members.
 * High flexibility in how sessions lists are formatted.
 * Customizable table output
+* Easily copy ssh public keys to hosts
 
 #### Soon to come ...
 * 'Remove' commands for groups and specific sessions in list. 
@@ -129,7 +138,7 @@ $ iam -l [group-name]
 ```
 Lists all sessions related to group. 
 ```
-$ iam -r [session_name]
+$ iam -r [alias] or [id]
 ```
 Remove session
 
@@ -145,3 +154,8 @@ iam format
 ``` 
 This will iterate through session list and reformat identifiers so that there are no inconsistencies. Once 'remove' command
 is implemented, this will run automatically to reindex identifiers. 
+
+```
+$ iam [id/alias] -cid
+```
+Invokes ssh-copy-id script on specified host to copy public key across for each access. This is only recommended for dev/test servers.
