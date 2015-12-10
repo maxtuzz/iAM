@@ -158,4 +158,4 @@ is implemented, this will run automatically to reindex identifiers.
 ```
 $ iam [id/alias] -cid
 ```
-Invokes ssh-copy-id script on specified host to copy public key across for each access. This is only recommended for dev/test servers.
+Invokes ssh-copy-id script on specified host to copy public key across for easy access. This is only recommended for dev/test servers.
