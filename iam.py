@@ -75,7 +75,16 @@ class IAM(object):
             print("\t# -------------------------------------------------"
                   "\n\t# iAM - The Simple and Speedy SSH Session Manager"
                   "\n\t# Designed and developed by Max Tuzzolino-Smith"
-                  "\n\t# ------------------------------------------------")
+                  "\n\t# ------------------------------------------------"
+                  "\n\nCommands:"
+                  "\n\t* Setting default username:\n\t\t`$ iam config user [username]`"
+                  "\n\n\t* Setting table style:\n\t\t`$ iam config table [style]`"
+                  "\n\n\t* Connecting to a session:\n\t\t`$ iam [id] or [alias]`"
+                  "\n\n\t* List all sessions:\n\t\t`$ iam -l` or `$ iam list`"
+                  "\n\n\t* List specific group:\n\t\t`$ iam -l [group]`"
+                  "\n\n\t* Reformat identifiers:\n\t\t`$ iam -f` or `$ iam format`\n\t\t"
+                  "Note: You should run this after manually editing the session file."
+                  "\n\n\t* Copy SSH public key :\n\t\t`$iam [id or alias] -cid`")
 
     # Session setup
     def setup_session(self, argv, session_list):
@@ -180,11 +189,11 @@ class IAM(object):
             # Group found
             if group == group_name:
                 entry.append(
-                    {
-                        'id': str(host_id),
-                        'name': name,
-                        'hostname': hostname
-                    }
+                        {
+                            'id': str(host_id),
+                            'name': name,
+                            'hostname': hostname
+                        }
                 )
 
                 a_dict = {group_name: entry}
@@ -292,7 +301,7 @@ class IAM(object):
         username = DEF_USERNAME
         table = DEF_TABLE_STYLE
 
-        if len(args) >2:
+        if len(args) > 2:
             # Set username
             if args[2] == "user":
                 if len(args) > 3:
@@ -325,6 +334,7 @@ class IAM(object):
             # Write to config
             with open(CONFIG_PATH, 'w') as f:
                 json.dump(CONFIG, f, indent=4, sort_keys=True)
+
 
 # ---------------------------
 # Application Execution
