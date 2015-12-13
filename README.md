@@ -87,6 +87,7 @@ This command follows the following format …
 So essentially we are asking the iam application to add an SSH host, with a specified name and a specified group we want to add it to. In this case we are adding it to the “AST” group - where all AST based servers will be listed. 
 
 Crap! We forgot the server name already (exactly the problem iAM tries to fix ;-) ). 
+
 ```
 $ iam ast
 
@@ -95,10 +96,11 @@ Searching for ‘ast’ ..
 
 $ iam 30
 ```
-(or of course, $ iam asttest1)
+
+(or of course, `$ iam asttest1`)
 SSH connecting to astwebrttst01.its.auckland.ac.nz... 
 
-You can use $ iam 30 [USERNAME] to connect under a different user other than what is specified in config.json
+You can use `$ iam 30 [USERNAME]` to connect under a different user other than what is specified in config.json
 ```
 [ SSH SESSION INITIATED ]
 ```

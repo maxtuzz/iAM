@@ -72,13 +72,15 @@ class IAM(object):
                 self.setup_session(sys.argv, session_list)
         else:
             # Nothing is defined - show help
-            print(" -- iAM here to help --")
+            print("\t# -------------------------------------------------"
+                  "\n\t# iAM - The Simple and Speedy SSH Session Manager"
+                  "\n\t# Designed and developed by Max Tuzzolino-Smith"
+                  "\n\t# ------------------------------------------------")
 
     # Session setup
     def setup_session(self, argv, session_list):
-
+        # Initiate session variable
         session = ""
-
 
         try:
             session_id = int(argv[1])
@@ -107,11 +109,13 @@ class IAM(object):
                 if '-' not in argv[2]:
                     username = argv[2]
                 else:
+                    # ssh-copy-id script
                     if argv[2] == "-cid":
                         protocol = "ssh-copy-id"
                     else:
                         print("Protocol {} not recognized".format(argv[2]))
                         sys.exit()
+
                     # Protocol and username specified
                     if len(argv) > 3:
                         username = argv[3]
