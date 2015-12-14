@@ -30,6 +30,7 @@ except KeyError:
     DEF_USERNAME = ""
 
     if len(sys.argv) > 1:
+        # Check if user is trying to change configuration
         if sys.argv[1] != "-c" and sys.argv[1] != "config":
             # Print error message
             print("ERROR: Default username not set, please set with `$ iam config user [username]`")
@@ -39,7 +40,9 @@ except KeyError:
 try:
     DEF_TABLE_STYLE = CONFIG["table_style"]
 except KeyError:
-    print("ERROR: A table_style was not defined, defaulting to `fancy_grid`")
+    # Print error
+    print("ERROR: A table_style was not defined, defaulting to `fancy_grid`"
+          "\n\t* To get rid of this error, set table style with `$ iam config table [style]`\n")
 
     # Set default table style
     DEF_TABLE_STYLE = "fancy_grid"
