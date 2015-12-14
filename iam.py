@@ -22,8 +22,27 @@ HEADERS = ["ID", "Alias", "Hostname"]
 # Initial config
 with open(CONFIG_PATH) as data:
     CONFIG = json.load(data)
+
+try:
     DEF_USERNAME = CONFIG["username"]
+except KeyError:
+    # Initiate DEF_USERNAME
+    DEF_USERNAME = ""
+
+    if len(sys.argv) > 1:
+        if sys.argv[1] != "-c" and sys.argv[1] != "config":
+            # Print error message
+            print("ERROR: Default username not set, please set with `$ iam config user [username]`")
+
+            # Exit program
+            sys.exit()
+try:
     DEF_TABLE_STYLE = CONFIG["table_style"]
+except KeyError:
+    print("ERROR: A table_style was not defined, defaulting to `fancy_grid`")
+
+    # Set default table style
+    DEF_TABLE_STYLE = "fancy_grid"
 
 
 class IAM(object):
