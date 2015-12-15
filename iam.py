@@ -210,10 +210,20 @@ class IAM(object):
     def add(self, hostname, name, group_name, session_list):
         host_id = 0
 
-        # First get latest ID
+        # First get latest ID and check if alias exits
         for group, entry in session_list.items():
             for i in range(len(entry)):
                 host_id += 1
+
+                # Check if alias exists
+                if entry[i]["name"] == name:
+                    # Print error
+                    print(
+                        "ERROR: Name '{name}' already exists in group '{group}', please try something different".format(
+                            name=name, group=group))
+
+                    # Exit application
+                    sys.exit()
 
         a_dict = None
 
@@ -290,7 +300,6 @@ class IAM(object):
         if len(argv) > 2:
             for group, entry in session_list.items():
                 if group == argv[2]:
-                    print(group)
                     # Increment hits
                     hits += 1
 
