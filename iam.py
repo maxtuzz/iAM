@@ -219,8 +219,8 @@ class IAM(object):
                 if entry[i]["name"] == name:
                     # Print error
                     print(
-                        "ERROR: Name '{name}' already exists in group '{group}', please try something different".format(
-                            name=name, group=group))
+                            "ERROR: Name '{name}' already exists in group '{group}', please try something different".format(
+                                    name=name, group=group))
 
                     # Exit application
                     sys.exit()
@@ -288,9 +288,8 @@ class IAM(object):
         else:
             print("Please include either an ID or an ALIAS as an argument")
 
-        # Write changes
-        with open(SESSION_PATH, 'w') as f:
-            json.dump(session_list, f, indent=4, sort_keys=True)
+        # Write + reformat identifiers after removing
+        self.format(session_list)
 
     # Remove by group
     def removegroup(self, session_list, argv):
@@ -310,10 +309,6 @@ class IAM(object):
                         # Delete group
                         del session_list[group]
 
-                        # Write changes
-                        with open(SESSION_PATH, 'w') as f:
-                            json.dump(session_list, f, indent=4, sort_keys=True)
-
                         # Break out of loop
                         break
                     else:
@@ -325,6 +320,9 @@ class IAM(object):
                 print("Could not find group ' {group} '".format(group=argv[2]))
         else:
             print("Please include the name of the group you wish to remove")
+
+        # Write + reformat identifiers after removing
+        self.format(session_list)
 
     # Search command
     def search(self, item, session_list):
