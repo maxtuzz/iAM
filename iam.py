@@ -40,9 +40,12 @@ except KeyError:
 try:
     DEF_TABLE_STYLE = CONFIG["table_style"]
 except KeyError:
-    # Print error
-    print("ERROR: A table_style was not defined, defaulting to `fancy_grid`"
-          "\n\t* To get rid of this error, set table style with `$ iam config table [style]`\n")
+    if len(sys.argv) > 1:
+        # Check if user is trying to change configuration
+        if sys.argv[1] != "-c" and sys.argv[1] != "config":
+            # Print error
+            print("ERROR: A table_style was not defined, defaulting to `fancy_grid`"
+                  "\n\t* To get rid of this error, set table style with `$ iam config table [style]`\n")
 
     # Set default table style
     DEF_TABLE_STYLE = "fancy_grid"
@@ -89,6 +92,9 @@ class IAM(object):
             elif sys.argv[1] == "-c" or sys.argv[1] == "config":
                 # Set configurations
                 self.config(sys.argv)
+            elif sys.argv[1] == "-r" or sys.argv[1] == "remove":
+                # Remove session
+                self.remove(session_list)
             else:
                 # Normal connect or search
                 self.setup_session(sys.argv, session_list)
@@ -246,7 +252,7 @@ class IAM(object):
                                                                                 group=group_name))
 
     # Remove command
-    def remove(self):
+    def remove(self, session_list):
         print("Remove a session here")
 
     # Search command
