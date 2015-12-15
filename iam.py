@@ -95,6 +95,8 @@ class IAM(object):
             elif sys.argv[1] == "-r" or sys.argv[1] == "remove":
                 # Remove session
                 self.remove(session_list, sys.argv)
+            elif sys.argv[1] == '-rg' or sys.argv[1] == "remove-group":
+                self.removegroup(session_list, sys.argv)
             else:
                 # Normal connect or search
                 self.setup_session(sys.argv, session_list)
@@ -253,7 +255,6 @@ class IAM(object):
 
     # Remove command
     def remove(self, session_list, argv):
-
         hits = 0
 
         # Delete all entries of parsed id/alias
@@ -274,6 +275,41 @@ class IAM(object):
         # Write changes
         with open(SESSION_PATH, 'w') as f:
             json.dump(session_list, f, indent=4, sort_keys=True)
+
+    # Remove by group
+    def removegroup(self, session_list, argv):
+        hits = 0
+
+        # Delete parsed group
+        if len(argv) > 2:
+            for group, entry in session_list.items():
+                if group == argv[2]:
+                    print(group)
+                    # Increment hits
+                    hits += 1
+
+                    # Prompt user for acceptance
+                    prompt = input("Are you sure you wish to remove group ' {group} ' y/n? ".format(group=group))
+
+                    if prompt == "y":
+                        # Delete group
+                        del session_list[group]
+
+                        # Write changes
+                        with open(SESSION_PATH, 'w') as f:
+                            json.dump(session_list, f, indent=4, sort_keys=True)
+
+                        # Break out of loop
+                        break
+                    else:
+                        # Do nothing
+                        break
+
+            # No entries found
+            if hits == 0:
+                print("Could not find group ' {group} '".format(group=argv[2]))
+        else:
+            print("Please include the name of the group you wish to remove")
 
     # Search command
     def search(self, item, session_list):
