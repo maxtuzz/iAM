@@ -260,14 +260,17 @@ class IAM(object):
     def remove(self, session_list, argv):
         hits = 0
 
-        # Delete all entries of parsed id/alias
+        # Delete first entry of parsed id/alias
         if len(argv) > 2:
             for group, entry in session_list.items():
-                for i in range(len(entry) - 1):
+                for i in range(len(entry)):
                     if entry[i]["id"] == argv[2] or entry[i]["name"] == argv[2]:
                         # Increment hits
                         hits += 1
                         del entry[i]
+
+                        # Break out of loop
+                        break
 
             # No entries found
             if hits == 0:
