@@ -54,7 +54,7 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 * Easily copy ssh public keys to hosts
 
 #### Soon to come ...
-* 'Remove' commands for groups and specific sessions in list. 
+* More customization
 
 ## Table formats
 
