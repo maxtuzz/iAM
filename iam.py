@@ -112,6 +112,9 @@ class IAM(object):
                   "\n\n\t* Connecting to a session:\n\t\t`$ iam [id] or [alias]`"
                   "\n\n\t* List all sessions:\n\t\t`$ iam -l` or `$ iam list`"
                   "\n\n\t* List specific group:\n\t\t`$ iam -l [group]`"
+                  "\n\n\t* Add to session list:\n\t\t`$ iam -a [hostname] [alias] [group](optional)`"
+                  "\n\n\t* Remove specific session:\n\t\t`$ iam -r [id or alias]`"
+                  "\n\n\t* Remove entire group (requires y/n prompt):\n\t\t`$ iam -rg [group-name]`"
                   "\n\n\t* Reformat identifiers:\n\t\t`$ iam -f` or `$ iam format`\n\t\t"
                   "Note: You should run this after manually editing the session file."
                   "\n\n\t* Copy SSH public key :\n\t\t`$iam [id or alias] -cid`")

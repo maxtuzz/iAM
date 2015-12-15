@@ -8,13 +8,12 @@ You may need to specify which Python3.x version you want to run with depending o
 For instance, pip3 defaults to Python3.5 - so this may need to be specified in source header at least until some VirtualEnv stuff is set up.
 
 #### Status:
+Is used in production daily. 
 Development progressing as things that I think can be improved are added.
 
 What needs to be done: 
 * More customization - full path to `ssh` and `ssh-copy-id` need to be configurable in properties in case these protocols aren't included within a users path correctly
 * Config needs to be formatted in standard ini-style using configparser instead of current json format for readability
-* Remove by session command
-* Remove by group command
 * Testing and bugfixes
 
 
@@ -33,7 +32,7 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 2. Move environment to /opt/
     * `$ sudo cp -r iAM /opt`
 4. Make yourself the owner of files
-    * `$ sudo chown $USER:$USER /opt/iAM/*`
+    * `$ sudo chown -R $USER:$USER /opt/iAM/*`
 5. Symlink over to /usr/local/bin
     * `$ sudo ln -s /opt/iAM/iam.py /usr/local/bin`
 6. Run anywhere from a terminal
@@ -86,7 +85,7 @@ This command follows the following format …
 
 So essentially we are asking the iam application to add an SSH host, with a specified name and a specified group we want to add it to. In this case we are adding it to the “AST” group - where all AST based servers will be listed. 
 
-Crap! We forgot the server name already (exactly the problem iAM tries to fix ;-) ). 
+Crap! We forgot the server name already! 
 
 ```
 $ iam ast
@@ -148,8 +147,6 @@ Remove session
 $ iam -rg [group_name]
 ```
 Remove group 
-
-Note: Removing has not yet been implemented and will need to be handled manually. 
 
 ```
 iam format
