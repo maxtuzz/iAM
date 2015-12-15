@@ -94,7 +94,7 @@ class IAM(object):
                 self.config(sys.argv)
             elif sys.argv[1] == "-r" or sys.argv[1] == "remove":
                 # Remove session
-                self.remove(session_list)
+                self.remove(session_list, sys.argv)
             else:
                 # Normal connect or search
                 self.setup_session(sys.argv, session_list)
@@ -252,8 +252,28 @@ class IAM(object):
                                                                                 group=group_name))
 
     # Remove command
-    def remove(self, session_list):
-        print("Remove a session here")
+    def remove(self, session_list, argv):
+
+        hits = 0
+
+        # Delete all entries of parsed id/alias
+        if len(argv) > 2:
+            for group, entry in session_list.items():
+                for i in range(len(entry) - 1):
+                    if entry[i]["id"] == argv[2] or entry[i]["name"] == argv[2]:
+                        # Increment hits
+                        hits += 1
+                        del entry[i]
+
+            # No entries found
+            if hits == 0:
+                print("Could not find alias or identifier ' {item} '".format(item=argv[2]))
+        else:
+            print("Please include either an ID or an ALIAS as an argument")
+
+        # Write changes
+        with open(SESSION_PATH, 'w') as f:
+            json.dump(session_list, f, indent=4, sort_keys=True)
 
     # Search command
     def search(self, item, session_list):
@@ -261,6 +281,8 @@ class IAM(object):
 
         hits = 0
         results = []
+
+        # Find results
         for group, entry in session_list.items():
             for i in range(len(entry)):
                 if item in entry[i]["hostname"]:
@@ -270,6 +292,7 @@ class IAM(object):
                     # Append results
                     results.append([entry[i]["id"], entry[i]["name"], entry[i]["hostname"]])
 
+        # Output results
         self.output(results, hits)
 
         if hits == 0:
@@ -293,6 +316,8 @@ class IAM(object):
 
                         # Append results
                         results.append([entry[i]["id"], entry[i]["name"], entry[i]["hostname"]])
+
+            # Output results
             self.output(results, hits)
         else:
             # List everything
@@ -303,6 +328,8 @@ class IAM(object):
 
                     # Append results
                     results.append([entry[i]["id"], entry[i]["name"], entry[i]["hostname"]])
+
+            # Output results
             self.output(results, hits)
         if hits == 0:
             print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
