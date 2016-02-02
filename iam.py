@@ -61,64 +61,6 @@ class IAM(object):
     # ` argv[4] = ... etc.
     # ---------------------------
 
-    def start(self):
-
-        # Open session config
-        with open(SESSION_PATH) as data:
-            session_list = json.load(data)
-
-        # If there are commands parsed
-        if len(sys.argv) > 1:
-            # Add session to list
-            if sys.argv[1] == "-a" or sys.argv[1] == "add":
-                if len(sys.argv) < 4:
-                    print("Please include [hostname] [alias] and optional [group]")
-                else:
-                    try:
-                        # Group is specified
-                        group = sys.argv[4]
-                    except IndexError:
-                        # Group not specified
-                        group = "unassigned"
-
-                    # Add [hostname] [alias] [group] to session list
-                    self.add(sys.argv[2], sys.argv[3], group, session_list)
-            elif sys.argv[1] == "-l" or sys.argv[1] == "list":
-                # List sessions
-                self.list(session_list, sys.argv)
-            elif sys.argv[1] == "-f" or sys.argv[1] == "format":
-                # Format identifiers
-                self.format(session_list)
-            elif sys.argv[1] == "-c" or sys.argv[1] == "config":
-                # Set configurations
-                self.config(sys.argv)
-            elif sys.argv[1] == "-r" or sys.argv[1] == "remove":
-                # Remove session
-                self.remove(session_list, sys.argv)
-            elif sys.argv[1] == '-rg' or sys.argv[1] == "remove-group":
-                self.removegroup(session_list, sys.argv)
-            else:
-                # Normal connect or search
-                self.setup_session(sys.argv, session_list)
-        else:
-            # Nothing is defined - show help
-            print("\t# -------------------------------------------------"
-                  "\n\t# iAM - The Simple and Speedy SSH Session Manager"
-                  "\n\t# Designed and developed by Max Tuzzolino-Smith"
-                  "\n\t# ------------------------------------------------"
-                  "\n\nCommands:"
-                  "\n\t* Setting default username:\n\t\t`$ iam config user [username]`"
-                  "\n\n\t* Setting table style:\n\t\t`$ iam config table [style]`"
-                  "\n\n\t* Connecting to a session:\n\t\t`$ iam [id] or [alias]`"
-                  "\n\n\t* List all sessions:\n\t\t`$ iam -l` or `$ iam list`"
-                  "\n\n\t* List specific group:\n\t\t`$ iam -l [group]`"
-                  "\n\n\t* Add to session list:\n\t\t`$ iam -a [hostname] [alias] [group](optional)`"
-                  "\n\n\t* Remove specific session:\n\t\t`$ iam -r [id or alias]`"
-                  "\n\n\t* Remove entire group (requires y/n prompt):\n\t\t`$ iam -rg [group-name]`"
-                  "\n\n\t* Reformat identifiers:\n\t\t`$ iam -f` or `$ iam format`\n\t\t"
-                  "Note: You should run this after manually editing the session file."
-                  "\n\n\t* Copy SSH public key :\n\t\t`$iam [id or alias] -cid`")
-
     # Session setup
     def setup_session(self, argv, session_list):
         # Initiate session variable
@@ -219,8 +161,8 @@ class IAM(object):
                 if entry[i]["name"] == name:
                     # Print error
                     print(
-                            "ERROR: Name '{name}' already exists in group '{group}', please try something different".format(
-                                    name=name, group=group))
+                        "ERROR: Name '{name}' already exists in group '{group}', please try something different".format(
+                            name=name, group=group))
 
                     # Exit application
                     sys.exit()
@@ -232,11 +174,11 @@ class IAM(object):
             # Group found
             if group == group_name:
                 entry.append(
-                        {
-                            'id': str(host_id),
-                            'name': name,
-                            'hostname': hostname
-                        }
+                    {
+                        'id': str(host_id),
+                        'name': name,
+                        'hostname': hostname
+                    }
                 )
 
                 a_dict = {group_name: entry}
@@ -445,5 +387,62 @@ class IAM(object):
 # ---------------------------
 
 if __name__ == '__main__':
+
+    # Create new iam object
     iam = IAM()
-    iam.start()
+
+    # Open session config
+    with open(SESSION_PATH) as data:
+        session_list = json.load(data)
+
+    # Commands parsed as arguments
+    if len(sys.argv) > 1:
+        # Add session to list
+        if sys.argv[1] == "-a" or sys.argv[1] == "add":
+            if len(sys.argv) < 4:
+                print("Please include [hostname] [alias] and optional [group]")
+            else:
+                try:
+                    # Group is specified
+                    group = sys.argv[4]
+                except IndexError:
+                    # Group not specified
+                    group = "unassigned"
+
+                # Add [hostname] [alias] [group] to session list
+                iam.add(sys.argv[2], sys.argv[3], group, session_list)
+        elif sys.argv[1] == "-l" or sys.argv[1] == "list":
+            # List sessions
+            iam.list(session_list, sys.argv)
+        elif sys.argv[1] == "-f" or sys.argv[1] == "format":
+            # Format identifiers
+            iam.format(session_list)
+        elif sys.argv[1] == "-c" or sys.argv[1] == "config":
+            # Set configurations
+            iam.config(sys.argv)
+        elif sys.argv[1] == "-r" or sys.argv[1] == "remove":
+            # Remove session
+            iam.remove(session_list, sys.argv)
+        elif sys.argv[1] == '-rg' or sys.argv[1] == "remove-group":
+            iam.removegroup(session_list, sys.argv)
+        else:
+            # Normal connect or search
+            iam.setup_session(sys.argv, session_list)
+    else:
+        # Nothing is defined - show help
+        print("\t# -------------------------------------------------"
+              "\n\t# iAM - The Simple and Speedy SSH Session Manager"
+              "\n\t# Designed and developed by Max Tuzzolino-Smith"
+              "\n\t# ------------------------------------------------"
+              "\n\nCommands:"
+              "\n\t* Setting default username:\n\t\t`$ iam config user [username]`"
+              "\n\n\t* Setting table style:\n\t\t`$ iam config table [style]`"
+              "\n\n\t* Connecting to a session:\n\t\t`$ iam [id] or [alias]`"
+              "\n\n\t* List all sessions:\n\t\t`$ iam -l` or `$ iam list`"
+              "\n\n\t* List specific group:\n\t\t`$ iam -l [group]`"
+              "\n\n\t* Add to session list:\n\t\t`$ iam -a [hostname] [alias] [group](optional)`"
+              "\n\n\t* Remove specific session:\n\t\t`$ iam -r [id or alias]`"
+              "\n\n\t* Remove entire group (requires y/n prompt):\n\t\t`$ iam -rg [group-name]`"
+              "\n\n\t* Reformat identifiers:\n\t\t`$ iam -f` or `$ iam format`\n\t\t"
+              "Note: You should run this after manually editing the session file."
+              "\n\n\t* Copy SSH public key :\n\t\t`$iam [id or alias] -cid`")
