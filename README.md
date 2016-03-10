@@ -8,28 +8,28 @@ This tool is used hundreds of times daily and has become a central part of membe
 `$ sudo pip install tabulate`
 or `$ sudo pip install requirements.txt`
 
-You may need to specify which Python3.x version you want to run with depending on your version of Pip. 
+You may need to specify which Python3.x version you want to run with depending on your version of Pip.
 
-Find out which version of pip you are using with `pip --version`. 
-If this says you are running Python 2.x you may need to use `pip3`
+Find out which version of pip you are using with `pip --version`.
+If this says you are running Python 2.x you may need to use `pip3`.
 
 #### Status:
-Used in production daily. 
+Used in production daily.
 Development progressing.
 
-Roadmap: 
-* Distribution is really bad at the moment. There needs to be a better way for people to run this mucking around with dependencies. Possible fixes: Docker, Vagrant, VirtualEnv
-* More customization - full path to `ssh` and `ssh-copy-id` need to be configurable in properties in case these protocols aren't included within a users path correctly - or a user prefers to use a custom SSH implementation. 
+Roadmap:
+* Distribution is really bad at the moment. There needs to be a better way for people to run this without the hassle of dealing with dependencies. Possible fixes: Docker, Vagrant, VirtualEnv.
+* More customization - full path to `ssh` and `ssh-copy-id` need to be configurable in properties in case these protocols aren't included within a users path correctly - or a user prefers to use a custom SSH implementation.
 * Testing and bugfixes.
 
 ## Why iAM is useful:
-For those working in distributed environments, a lot of time spent is remotely connecting to specific hosts. There are some solutions at play that can be utilized: 
-1. Look up servers in company documentation to remind yourself (or memorize hostnames). 
-2. Use a GUI like RemoteNG or Putty which works great, but is hard to customize and setup for preferred use. You also have to manually search down a list before your eye catches on the service you are looking for which is time consuming. 
+For those working in distributed environments, a lot of time spent is remotely connecting to specific hosts. There are some solutions at play that can be utilized:
+1. Look up servers in company documentation to remind yourself (or memorize hostnames).
+2. Use a GUI like RemoteNG or Putty which works great, but is hard to customize and setup for preferred use. You also have to manually search down a list before your eye catches on the service you are looking for which is time consuming.
 3. Compile a list of hosts and search through list for keywords you remember about the host name .
-4. Use your command history to search for previous sessions connected to. 
+4. Use your command history to search for previous sessions connected to.
 
-iAM seeks to remedy this through providing a easy-to-use, terminal-based solution, designed for speed and a low gulf-of-execution. 
+iAM seeks to remedy this through providing a easy-to-use, terminal-based solution, designed for speed and a low gulf-of-execution.
 
 ## Quick start from clone
 
@@ -49,7 +49,7 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 Or:
 1. Clone to `$HOME/bin` and rename iam.py to iam and make it executable
 
-##### Windows 
+##### Windows
 1. Install iAM to Program Files or anywhere convenient
 2. Add iam directory to your PATH
 
@@ -57,8 +57,8 @@ Or:
 * Application invocation through easy ‘iam’ command.
 * Maintainable SSH lists.
 * Easy addition/removal of SSH sessions.
-* SSH session groups. i.e. group by DEV, TEST, or PRODUCTION servers. 
-* Easy SSH list search. 
+* SSH session groups. i.e. group by DEV, TEST, or PRODUCTION servers.
+* Easy SSH list search.
 * Session initiation through ‘iam [id]’ or 'iam [alias]'.
 * Share external session lists between team members.
 * High flexibility in how sessions lists are formatted.
@@ -93,17 +93,17 @@ I am given a task to do a simple application upgrade of ‘graduate search’ ap
 ```
 $ iam -a astwebrttst01.its.auckland.ac.nz asttst1 AST
 ```
-This command follows the following format … 
+This command follows the following format …
 [Host address] [Host short name (alias)] [Host Group]
 
-So essentially we are asking the iam application to add an SSH host, with a specified name and a specified group we want to add it to. In this case we are adding it to the “AST” group - where all AST based servers will be listed. 
+So essentially we are asking the iam application to add an SSH host, with a specified name and a specified group we want to add it to. In this case we are adding it to the “AST” group - where all AST based servers will be listed.
 
-But we've forgotten this long hostname already. 
+But we've forgotten this long hostname already.
 
 ```
 $ iam ast
 
-Searching for ‘ast’ .. 
+Searching for ‘ast’ ..
 [30], asttst1, astwebrttst01.its.auckland.ac.nz
 
 $ iam 30
@@ -114,7 +114,7 @@ $ iam 30
 
 NOTE: You can use `$ iam 30 [USERNAME]` to connect under a different user other than what is specified in config.json
 
-This is but a simple use case. First we search for our server keyword that we know of, and iAM spits out results in the form of: identifier, host name, host address. 
+This is but a simple use case. First we search for our server keyword that we know of, and iAM spits out results in the form of: identifier, host name, host address.
 
 We can then invoke `$ iam [ID]` to start a session with the address linked to that identifer! Very easy and all with less characters than typing out the actual server address, not to mention searching to find out what it is.
 
@@ -142,13 +142,13 @@ $ iam [id] or [alias]
 Connect to session
 
 ```
-$ iam -l 
+$ iam -l
 ```
-Lists all sessions. 
+Lists all sessions.
 ```
-$ iam -l [group-name] 
+$ iam -l [group-name]
 ```
-Lists all sessions related to group. 
+Lists all sessions related to group.
 ```
 $ iam -r [alias] or [id]
 ```
@@ -157,13 +157,13 @@ Remove host
 ```
 $ iam -rg [group_name]
 ```
-Remove group 
+Remove group
 
 ```
 iam format
-``` 
+```
 This will iterate through session list and reformat identifiers so that there are no inconsistencies. Once 'remove' command
-is implemented, this will run automatically to reindex identifiers. 
+is implemented, this will run automatically to reindex identifiers.
 
 ```
 $ iam [id/alias] -cid
