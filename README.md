@@ -5,18 +5,21 @@ The goal of this project is first and foremost to provide efficient methodologie
 This tool is used hundreds of times daily and has become a central part of members of the Application Engineering team, and other ITS team’s daily workflows.
 
 #### For now, only dependency is tabulate:
-`sudo pip install tabulate`
+`$ sudo pip install tabulate`
+or `$ sudo pip install requirements.txt`
 
 You may need to specify which Python3.x version you want to run with depending on your version of Pip. 
-For instance, pip3 defaults to Python3.5 - so this may need to be specified in source header at least until some VirtualEnv stuff is set up.
+
+Find out which version of pip you are using with `pip --version`. 
+If this says you are running Python 2.x you may need to use `pip3`
 
 #### Status:
 Used in production daily. 
 Development progressing.
 
 Roadmap: 
+* Distribution is really bad at the moment. There needs to be a better way for people to run this mucking around with dependencies. Possible fixes: Docker, Vagrant, VirtualEnv
 * More customization - full path to `ssh` and `ssh-copy-id` need to be configurable in properties in case these protocols aren't included within a users path correctly - or a user prefers to use a custom SSH implementation. 
-* Config needs to be formatted in standard ini-style using configparser instead of current json format for readability and for the sake of sticking to standards.
 * Testing and bugfixes.
 
 ## Why iAM is useful:
