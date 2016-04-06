@@ -4,15 +4,6 @@ A simple, lightweight, SSH session manager tool
 The goal of this project is first and foremost to provide efficient methodologies in the maintenance and management of SSH sessions. This application was developed to mitigate and reduce the time spent in remotely connecting to specific hosts through various automated approaches. iAM provides an elegant, and simple solution to group, connect, tunnel and manage ssh-keys between hosts.
 This tool is used hundreds of times daily and has become a central part of members of the Application Engineering team, and other ITS team’s daily workflows.
 
-#### For now, only dependency is tabulate:
-`$ sudo pip install tabulate`
-or `$ sudo pip install requirements.txt`
-
-You may need to specify which Python3.x version you want to run with depending on your version of Pip.
-
-Find out which version of pip you are using with `pip --version`.
-If this says you are running Python 2.x you may need to use `pip3`.
-
 #### Status:
 Used in production daily.
 Development progressing.
@@ -31,6 +22,7 @@ For those working in distributed environments, a lot of time spent is remotely c
 
 iAM seeks to remedy this through providing a easy-to-use, terminal-based solution, designed for speed and a low gulf-of-execution.
 ## Quick start from release
+
 1. Head to the [releases page](https://github.com/maxtuzz/iAM/releases).
 2. Download 'iam.tar.gz'.
 3. Extract with your favorite tool or through command line with `$ tar zxvf iam.tar.gz`
@@ -38,6 +30,15 @@ iAM seeks to remedy this through providing a easy-to-use, terminal-based solutio
 5. Symlink to /usr/bin/local so that it is accessible anywhere `$ sudo ln -s {path_to_iam} /usr/local/bin/iam`
 
 ## Quick start from clone
+
+##### For now, only dependency is tabulate:
+`$ sudo pip install tabulate`
+or `$ sudo pip install requirements.txt`
+
+You may need to specify which Python3.x version you want to run with depending on your version of Pip.
+
+Find out which version of pip you are using with `pip --version`.
+If this says you are running Python 2.x you may need to use `pip3`.
 
 ##### Linux/MacOS:
 1. Clone environment
