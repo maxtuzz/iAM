@@ -30,6 +30,12 @@ For those working in distributed environments, a lot of time spent is remotely c
 4. Use your command history to search for previous sessions connected to.
 
 iAM seeks to remedy this through providing a easy-to-use, terminal-based solution, designed for speed and a low gulf-of-execution.
+## Quick start from release
+1. Head to the [releases page](https://github.com/maxtuzz/iAM/releases).
+2. Download 'iam.tar.gz'.
+3. Extract with your favorite tool or through command line with `$ tar zxvf iam.tar.gz`
+4. Run iam and create your default user `$ ./iam config user [username]`
+5. Symlink to /usr/bin/local so that it is accessible anywhere `$ sudo ln -s {path_to_iam} /usr/local/bin/iam`
 
 ## Quick start from clone
 
