@@ -2,7 +2,7 @@
 
 # -------------------------------------------------
 # iAM - The Simple and Speedy SSH Session Manager
-# Designed and developed by Max Tuzzolino-Smith
+# Developed by Max Tuzzolino-Smith
 # -------------------------------------------------
 
 # __author__ = "Max Tuzzolino-Smith"
@@ -16,7 +16,7 @@ from tabulate import tabulate
 SESSION_PATH = os.path.dirname(os.path.realpath(__file__)) + "/sessions.json"
 CONFIG_PATH = os.path.dirname(os.path.realpath(__file__)) + "/config.json"
 
-# Headers
+# Table headers
 HEADERS = ["ID", "Alias", "Hostname"]
 
 # Initial config
