@@ -2,16 +2,15 @@
 A simple, lightweight, SSH session manager tool
 
 The goal of this project is first and foremost to provide efficient methodologies in the maintenance and management of SSH sessions. This application was developed to mitigate and reduce the time spent in remotely connecting to specific hosts through various automated approaches. iAM provides an elegant, and simple solution to group, connect, tunnel and manage ssh-keys between hosts.
-This tool is used hundreds of times daily and has become a central part of members of the Application Engineering team, and other ITS team’s daily workflows.
 
 #### Status:
 Used in production daily.
 Development progressing.
 
 Roadmap:
-* Distribution is really bad at the moment. There needs to be a better way for people to run this without the hassle of dealing with dependencies. Possible fixes: Docker, Vagrant, VirtualEnv.
 * More customization - full path to `ssh` and `ssh-copy-id` need to be configurable in properties in case these protocols aren't included within a users path correctly - or a user prefers to use a custom SSH implementation.
 * Testing and bugfixes.
+* Fully implemented ssh functionality for better cross-system compatibility (possibly).
 
 ## Why iAM is useful:
 For those working in distributed environments, a lot of time spent is remotely connecting to specific hosts. There are some solutions at play that can be utilized:
