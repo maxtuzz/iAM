@@ -325,7 +325,7 @@ class IAM(object):
         if hits == 0:
             print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
 
-    # Format command (reindexes identifiers)
+    # Format command (re-indexes identifiers)
     def format(self, session_list):
         hits = 0
 
@@ -342,23 +342,23 @@ class IAM(object):
             json.dump(session_list, f, indent=4, sort_keys=True)
 
     # Config command
-    def config(self, args):
+    def config(self, argv):
         # Set default properties
         username = DEF_USERNAME
         table = DEF_TABLE_STYLE
 
-        if len(args) > 2:
+        if len(argv) > 2:
             # Set username
-            if args[2] == "user":
-                if len(args) > 3:
-                    username = args[3].strip("\"")
+            if argv[2] == "user":
+                if len(argv) > 3:
+                    username = argv[3].strip("\"")
                 else:
                     print("Please provide a username")
 
             # Set table style
-            if args[2] == "table":
-                if len(args) > 3:
-                    table = args[3].strip("\"")
+            if argv[2] == "table":
+                if len(argv) > 3:
+                    table = argv[3].strip("\"")
                 else:
                     print("Please choose one of the following tables and run $ iam table [table_name]:\
                         \n\t* plain \
@@ -393,7 +393,7 @@ if __name__ == '__main__':
 
     # Open session config
     with open(SESSION_PATH) as data:
-        session_list = json.load(data)
+        hosts = json.load(data)
 
     # Commands parsed as arguments
     if len(sys.argv) > 1:
@@ -410,29 +410,29 @@ if __name__ == '__main__':
                     group = "unassigned"
 
                 # Add [hostname] [alias] [group] to session list
-                iam.add(sys.argv[2], sys.argv[3], group, session_list)
+                iam.add(sys.argv[2], sys.argv[3], group, hosts)
         elif sys.argv[1] == "-l" or sys.argv[1] == "list":
             # List sessions
-            iam.list(session_list, sys.argv)
+            iam.list(hosts, sys.argv)
         elif sys.argv[1] == "-f" or sys.argv[1] == "format":
             # Format identifiers
-            iam.format(session_list)
+            iam.format(hosts)
         elif sys.argv[1] == "-c" or sys.argv[1] == "config":
             # Set configurations
             iam.config(sys.argv)
         elif sys.argv[1] == "-r" or sys.argv[1] == "remove":
             # Remove session
-            iam.remove(session_list, sys.argv)
+            iam.remove(hosts, sys.argv)
         elif sys.argv[1] == '-rg' or sys.argv[1] == "remove-group":
-            iam.removegroup(session_list, sys.argv)
+            iam.removegroup(hosts, sys.argv)
         else:
             # Normal connect or search
-            iam.setup_session(sys.argv, session_list)
+            iam.setup_session(sys.argv, hosts)
     else:
         # Nothing is defined - show help
         print("\t# -------------------------------------------------"
               "\n\t# iAM - The Simple and Speedy SSH Session Manager"
-              "\n\t# Designed and developed by Max Tuzzolino-Smith"
+              "\n\t# Developed by Max Tuzzolino-Smith"
               "\n\t# ------------------------------------------------"
               "\n\nCommands:"
               "\n\t* Setting default username:\n\t\t`$ iam config user [username]`"
