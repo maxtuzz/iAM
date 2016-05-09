@@ -172,9 +172,16 @@ This will iterate through session list and reformat identifiers so that there ar
 is implemented, this will run automatically to reindex identifiers.
 
 ```
-$ iam [id/alias] -cid
+$ iam [id or alias] -cid
 ```
 Invokes ssh-copy-id script on specified host to copy public key across for easy access.
+
+```
+$ iam cp /[id or alias]:/path/to/file /path/to/destination
+or
+$ iam cp /path/to/file /[id or alias]:/path/to/destination 
+```
+Invokes 'scp' command to securely copy files between your local and host using iam aliases. 
 
 #### License
 Copyright 2015 Max Tuzzolino-Smith

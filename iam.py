@@ -64,22 +64,7 @@ class IAM(object):
     # Session setup
     def setup_session(self, argv, session_list):
         # Initiate session variable
-        session = ""
-
-        try:
-            session_id = int(argv[1])
-
-            for group, entry in session_list.items():
-                for i in range(len(entry)):
-                    if entry[i]["id"] == str(session_id):
-                        session = entry[i]["hostname"]
-        except ValueError:
-            # Session based on ID not found, assuming name was parsed
-            if not session:
-                for group, entry in session_list.items():
-                    for i in range(len(entry)):
-                        if entry[i]["name"] == argv[1]:
-                            session = entry[i]["hostname"]
+        session = self.get_host(argv[1])
 
         # If session is still empty, do a search for it. Unless it's an ID.
         if not session:
@@ -106,6 +91,26 @@ class IAM(object):
 
             # Connect to server based on ID.
             self.connect(session, username, protocol)
+
+    def get_host(self, host, session_list):
+        # Initiate session variable
+        session = ""
+
+        try:
+            session_id = int(host)
+
+            for group, entry in session_list.items():
+                for i in range(len(entry)):
+                    if entry[i]["id"] == str(session_id):
+                        session = entry[i]["hostname"]
+        except ValueError:
+            # Session based on ID not found, assuming name was parsed
+            if not session:
+                for group, entry in session_list.items():
+                    for i in range(len(entry)):
+                        if entry[i]["name"] == host:
+                            session = entry[i]["hostname"]
+        return session
 
     # ---------------------------
     # Application Logic
@@ -381,6 +386,47 @@ class IAM(object):
             with open(CONFIG_PATH, 'w') as f:
                 json.dump(CONFIG, f, indent=4, sort_keys=True)
 
+    # Copy command (scp implementation)
+    def copy(self, session_list, argv):
+        if len(argv) > 2:
+            username = DEF_USERNAME
+
+            if '/' in argv[2]:
+                connection = argv[2].split(':')
+                host = connection[0][1:]
+                path = connection[1]
+                session = self.get_host(host, session_list)
+
+                if not session:
+                    print("Host {} could not be found".format(host))
+                    sys.exit()
+
+                print("iAM copying from {} to {}".format(host, argv[3]))
+
+                # Copy files "scp mtuz243@bpmprd01.its.auckland.ac.nz:/path/to/file"
+                os.system("scp {user}@{host}:{path} {destination}".format(user=username, host=session, path=path,
+                                                                          destination=argv[3]))
+
+            elif '/' in argv[3]:
+                connection = argv[3].split(':')
+                host = connection[0][1:]
+                path = connection[1]
+                session = self.get_host(host, session_list)
+
+                if not session:
+                    print("Host {} could not be found".format(host))
+                    sys.exit()
+
+                print("iAM copying from {} to {}".format(argv[2], host))
+
+                # Copy files "scp mtuz243@bpmprd01.its.auckland.ac.nz:/path/to/file"
+                os.system("scp {local} {user}@{host}:{path}".format(user=username, host=session, path=path,
+                                                                    local=argv[2]))
+            else:
+                print("Please reference an alias or id. Example: /alias, or /41.")
+        else:
+            print("Please provide a source and destination: `$ iam cp $alias:/home/user/file.txt ~/`")
+
 
 # ---------------------------
 # Application Execution
@@ -425,6 +471,8 @@ if __name__ == '__main__':
             iam.remove(hosts, sys.argv)
         elif sys.argv[1] == '-rg' or sys.argv[1] == "remove-group":
             iam.removegroup(hosts, sys.argv)
+        elif sys.argv[1] == 'cp' or sys.argv[1] == "copy":
+            iam.copy(hosts, sys.argv)
         else:
             # Normal connect or search
             iam.setup_session(sys.argv, hosts)
@@ -445,4 +493,5 @@ if __name__ == '__main__':
               "\n\n\t* Remove entire group (requires y/n prompt):\n\t\t`$ iam -rg [group-name]`"
               "\n\n\t* Reformat identifiers:\n\t\t`$ iam -f` or `$ iam format`\n\t\t"
               "Note: You should run this after manually editing the session file."
-              "\n\n\t* Copy SSH public key :\n\t\t`$iam [id or alias] -cid`")
+              "\n\n\t* Copy SSH public key:\n\t\t`$ iam [id or alias] -cid`"
+              "\n\n\t* Copy file:\n\t\t`$ iam cp /[id or alias]:/path/to/file /path/to/destination` or reversed")
