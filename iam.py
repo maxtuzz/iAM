@@ -391,7 +391,7 @@ class IAM(object):
         if len(argv) > 2:
             username = DEF_USERNAME
 
-            if '/' in argv[2]:
+            if '!' in argv[2]:
                 connection = argv[2].split(':')
                 host = connection[0][1:]
                 path = connection[1]
@@ -407,7 +407,7 @@ class IAM(object):
                 os.system("scp {user}@{host}:{path} {destination}".format(user=username, host=session, path=path,
                                                                           destination=argv[3]))
 
-            elif '/' in argv[3]:
+            elif '!' in argv[3]:
                 connection = argv[3].split(':')
                 host = connection[0][1:]
                 path = connection[1]
@@ -423,9 +423,9 @@ class IAM(object):
                 os.system("scp {local} {user}@{host}:{path}".format(user=username, host=session, path=path,
                                                                     local=argv[2]))
             else:
-                print("Please reference an alias or id. Example: /alias, or /41.")
+                print("Please reference an alias or id. Example: !alias, or /41.")
         else:
-            print("Please provide a source and destination: `$ iam cp $alias:/home/user/file.txt ~/`")
+            print("Please provide a source and destination: `$ iam cp !alias:/home/user/file.txt ~/`")
 
 
 # ---------------------------
@@ -494,4 +494,4 @@ if __name__ == '__main__':
               "\n\n\t* Reformat identifiers:\n\t\t`$ iam -f` or `$ iam format`\n\t\t"
               "Note: You should run this after manually editing the session file."
               "\n\n\t* Copy SSH public key:\n\t\t`$ iam [id or alias] -cid`"
-              "\n\n\t* Copy file:\n\t\t`$ iam cp /[id or alias]:/path/to/file /path/to/destination` or reversed")
+              "\n\n\t* Copy file:\n\t\t`$ iam cp ![id or alias]:/path/to/file /path/to/destination` or reversed")

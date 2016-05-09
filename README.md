@@ -177,9 +177,9 @@ $ iam [id or alias] -cid
 Invokes ssh-copy-id script on specified host to copy public key across for easy access.
 
 ```
-$ iam cp /[id or alias]:/path/to/file /path/to/destination
+$ iam cp ![id or alias]:/path/to/file /path/to/destination
 or
-$ iam cp /path/to/file /[id or alias]:/path/to/destination 
+$ iam cp /path/to/file ![id or alias]:/path/to/destination 
 ```
 Invokes 'scp' command to securely copy files between your local and host using iam aliases. 
 
