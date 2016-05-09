@@ -64,7 +64,7 @@ class IAM(object):
     # Session setup
     def setup_session(self, argv, session_list):
         # Initiate session variable
-        session = self.get_host(argv[1])
+        session = self.get_host(argv[1], session_list)
 
         # If session is still empty, do a search for it. Unless it's an ID.
         if not session:
