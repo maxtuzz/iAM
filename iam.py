@@ -61,52 +61,60 @@ class IAM(object):
     # ` argv[4] = ... etc.
     # ---------------------------
 
+    # ---------------------------
+    # Constructor
+    # ---------------------------
+
+    def __init__(self, session_list, argv):
+        self.session_list = session_list
+        self.argv = argv
+
     # Session setup
-    def setup_session(self, argv, session_list):
+    def setup_session(self):
         # Initiate session variable
-        session = self.get_host(argv[1], session_list)
+        session = self.get_host(self.argv[1])
 
         # If session is still empty, do a search for it. Unless it's an ID.
         if not session:
-            self.search(argv[1], session_list)
+            self.search(self.argv[1])
         else:
             username = None
             protocol = None
 
             # If custom username or protocol (or both) specified
-            if len(argv) > 2:
-                if '-' not in argv[2]:
-                    username = argv[2]
+            if len(self.argv) > 2:
+                if '-' not in self.argv[2]:
+                    username = self.argv[2]
                 else:
                     # ssh-copy-id script
-                    if argv[2] == "-cid":
+                    if self.argv[2] == "-cid":
                         protocol = "ssh-copy-id"
                     else:
-                        print("Protocol {} not recognized".format(argv[2]))
+                        print("Protocol {} not recognized".format(self.argv[2]))
                         sys.exit()
 
                     # Protocol and username specified
-                    if len(argv) > 3:
-                        username = argv[3]
+                    if len(self.argv) > 3:
+                        username = self.argv[3]
 
             # Connect to server based on ID.
             self.connect(session, username, protocol)
 
-    def get_host(self, host, session_list):
+    def get_host(self, host):
         # Initiate session variable
         session = ""
 
         try:
             session_id = int(host)
 
-            for group, entry in session_list.items():
+            for group, entry in self.session_list.items():
                 for i in range(len(entry)):
                     if entry[i]["id"] == str(session_id):
                         session = entry[i]["hostname"]
         except ValueError:
             # Session based on ID not found, assuming name was parsed
             if not session:
-                for group, entry in session_list.items():
+                for group, entry in self.session_list.items():
                     for i in range(len(entry)):
                         if entry[i]["name"] == host:
                             session = entry[i]["hostname"]
@@ -154,11 +162,11 @@ class IAM(object):
     # ---------------------------
 
     # Add command
-    def add(self, hostname, name, group_name, session_list):
+    def add(self, hostname, name, group_name):
         host_id = 0
 
         # First get latest ID and check if alias exits
-        for group, entry in session_list.items():
+        for group, entry in self.session_list.items():
             for i in range(len(entry)):
                 host_id += 1
 
@@ -175,7 +183,7 @@ class IAM(object):
         a_dict = None
 
         # Add to file
-        for group, entry in session_list.items():
+        for group, entry in self.session_list.items():
             # Group found
             if group == group_name:
                 entry.append(
@@ -204,24 +212,26 @@ class IAM(object):
                     }]
             }
 
-        session_list.update(a_dict)
+        self.session_list.update(a_dict)
 
         with open(SESSION_PATH, 'w') as f:
-            json.dump(session_list, f, indent=4, sort_keys=True)
+            json.dump(self.session_list, f, indent=4, sort_keys=True)
 
         print("Entry added:")
         print("ID: {id}, Name: {name}, Hostname: {host}, Group: {group}".format(id=host_id, name=name, host=hostname,
                                                                                 group=group_name))
 
     # Remove command
-    def remove(self, session_list, argv):
+    def remove(self):
         hits = 0
 
+        to_remove = self.argv[2]
+
         # Delete first entry of parsed id/alias
-        if len(argv) > 2:
-            for group, entry in session_list.items():
+        if len(self.argv) > 2:
+            for group, entry in self.session_list.items():
                 for i in range(len(entry)):
-                    if entry[i]["id"] == argv[2] or entry[i]["name"] == argv[2]:
+                    if entry[i]["id"] == to_remove or entry[i]["name"] == to_remove:
                         # Increment hits
                         hits += 1
                         del entry[i]
@@ -231,21 +241,21 @@ class IAM(object):
 
             # No entries found
             if hits == 0:
-                print("Could not find alias or identifier ' {item} '".format(item=argv[2]))
+                print("Could not find alias or identifier ' {item} '".format(item=self.argv[2]))
         else:
             print("Please include either an ID or an ALIAS as an argument")
 
         # Write + reformat identifiers after removing
-        self.format(session_list)
+        self.format()
 
     # Remove by group
-    def removegroup(self, session_list, argv):
+    def removegroup(self):
         hits = 0
 
         # Delete parsed group
-        if len(argv) > 2:
-            for group, entry in session_list.items():
-                if group == argv[2]:
+        if len(self.argv) > 2:
+            for group, entry in self.session_list.items():
+                if group == self.argv[2]:
                     # Increment hits
                     hits += 1
 
@@ -254,7 +264,7 @@ class IAM(object):
 
                     if prompt == "y":
                         # Delete group
-                        del session_list[group]
+                        del self.session_list[group]
 
                         # Break out of loop
                         break
@@ -264,22 +274,22 @@ class IAM(object):
 
             # No entries found
             if hits == 0:
-                print("Could not find group ' {group} '".format(group=argv[2]))
+                print("Could not find group ' {group} '".format(group=self.argv[2]))
         else:
             print("Please include the name of the group you wish to remove")
 
         # Write + reformat identifiers after removing
-        self.format(session_list)
+        self.format()
 
     # Search command
-    def search(self, item, session_list):
+    def search(self, item):
         print("Searching for ' {item} '".format(item=item))
 
         hits = 0
         results = []
 
         # Find results
-        for group, entry in session_list.items():
+        for group, entry in self.session_list.items():
             for i in range(len(entry)):
                 if item in entry[i]["hostname"]:
                     # Increment hits
@@ -295,18 +305,18 @@ class IAM(object):
             print("Cannot find: ' {item} '".format(item=item))
 
     # List command
-    def list(self, session_list, argv):
+    def list(self):
 
         hits = 0
         results = []
 
         # Search by group
-        if len(argv) > 2:
-            print("Listing group '{group}':".format(group=argv[2]))
+        if len(self.argv) > 2:
+            print("Listing group '{group}':".format(group=self.argv[2]))
 
-            for group, entry in session_list.items():
+            for group, entry in self.session_list.items():
                 for i in range(len(entry)):
-                    if group == argv[2]:
+                    if group == self.argv[2]:
                         # Increment hits
                         hits += 1
 
@@ -317,7 +327,7 @@ class IAM(object):
             self.output(results, hits)
         else:
             # List everything
-            for group, entry in session_list.items():
+            for group, entry in self.session_list.items():
                 for i in range(len(entry)):
                     # Increment hits
                     hits += 1
@@ -331,11 +341,11 @@ class IAM(object):
             print("No sessions. Add sessions to /opt/iam/sessions.json or with the 'iam add' command")
 
     # Format command (re-indexes identifiers)
-    def format(self, session_list):
+    def format(self):
         hits = 0
 
         # For every entry, increment and set id
-        for group, entry in session_list.items():
+        for group, entry in self.session_list.items():
             for i in range(len(entry)):
                 # Set id
                 entry[i]["id"] = str(hits)
@@ -344,26 +354,26 @@ class IAM(object):
                 hits += 1
 
         with open(SESSION_PATH, 'w') as f:
-            json.dump(session_list, f, indent=4, sort_keys=True)
+            json.dump(self.session_list, f, indent=4, sort_keys=True)
 
     # Config command
-    def config(self, argv):
+    def config(self):
         # Set default properties
         username = DEF_USERNAME
         table = DEF_TABLE_STYLE
 
-        if len(argv) > 2:
+        if len(self.argv) > 2:
             # Set username
-            if argv[2] == "user":
-                if len(argv) > 3:
-                    username = argv[3].strip("\"")
+            if self.argv[2] == "user":
+                if len(self.argv) > 3:
+                    username = self.argv[3].strip("\"")
                 else:
                     print("Please provide a username")
 
             # Set table style
-            if argv[2] == "table":
-                if len(argv) > 3:
-                    table = argv[3].strip("\"")
+            if self.argv[2] == "table":
+                if len(self.argv) > 3:
+                    table = self.argv[3].strip("\"")
                 else:
                     print("Please choose one of the following tables and run $ iam table [table_name]:\
                         \n\t* plain \
@@ -387,42 +397,42 @@ class IAM(object):
                 json.dump(CONFIG, f, indent=4, sort_keys=True)
 
     # Copy command (scp implementation)
-    def copy(self, session_list, argv):
-        if len(argv) > 2:
+    def copy(self):
+        if len(self.argv) > 2:
             username = DEF_USERNAME
 
-            if '!' in argv[2]:
-                connection = argv[2].split(':')
+            if '!' in self.argv[2]:
+                connection = self.argv[2].split(':')
                 host = connection[0][1:]
                 path = connection[1]
-                session = self.get_host(host, session_list)
+                session = self.get_host(host)
 
                 if not session:
                     print("Host {} could not be found".format(host))
                     sys.exit()
 
-                print("iAM copying from {} to {}".format(session, argv[3]))
+                print("iAM copying from {} to {}".format(session, self.argv[3]))
 
                 # Copy files "scp mtuz243@bpmprd01.its.auckland.ac.nz:/path/to/file"
                 os.system(
                     "scp {user}@{hostname}:{path} {local}".format(user=username, hostname=session, path=path,
-                                                                  local=argv[3]))
+                                                                  local=self.argv[3]))
 
-            elif '!' in argv[3]:
-                connection = argv[3].split(':')
+            elif '!' in self.argv[3]:
+                connection = self.argv[3].split(':')
                 host = connection[0][1:]
                 path = connection[1]
-                session = self.get_host(host, session_list)
+                session = self.get_host(host)
 
                 if not session:
                     print("Host {} could not be found".format(host))
                     sys.exit()
 
-                print("iAM copying from {} to {}".format(argv[2], session))
+                print("iAM copying from {} to {}".format(self.argv[2], session))
 
                 # Copy files "scp mtuz243@bpmprd01.its.auckland.ac.nz:/path/to/file"
                 os.system("scp {local} {user}@{hostname}:{path}".format(user=username, hostname=session, path=path,
-                                                                        local=argv[2]))
+                                                                        local=self.argv[2]))
             else:
                 print("Please reference an alias or id. Example: !alias, or /41.")
         else:
@@ -435,12 +445,12 @@ class IAM(object):
 
 if __name__ == '__main__':
 
-    # Create new iam object
-    iam = IAM()
-
     # Open session config
     with open(SESSION_PATH) as data:
         hosts = json.load(data)
+
+    # Create new iam object with session list and arguments parsed
+    iam = IAM(hosts, sys.argv)
 
     # Commands parsed as arguments
     if len(sys.argv) > 1:
@@ -457,26 +467,26 @@ if __name__ == '__main__':
                     group = "unassigned"
 
                 # Add [hostname] [alias] [group] to session list
-                iam.add(sys.argv[2], sys.argv[3], group, hosts)
+                iam.add(sys.argv[2], sys.argv[3], group)
         elif sys.argv[1] == "-l" or sys.argv[1] == "list":
             # List sessions
-            iam.list(hosts, sys.argv)
+            iam.list()
         elif sys.argv[1] == "-f" or sys.argv[1] == "format":
             # Format identifiers
-            iam.format(hosts)
+            iam.format()
         elif sys.argv[1] == "-c" or sys.argv[1] == "config":
             # Set configurations
-            iam.config(sys.argv)
+            iam.config()
         elif sys.argv[1] == "-r" or sys.argv[1] == "remove":
             # Remove session
-            iam.remove(hosts, sys.argv)
+            iam.remove()
         elif sys.argv[1] == '-rg' or sys.argv[1] == "remove-group":
-            iam.removegroup(hosts, sys.argv)
+            iam.removegroup()
         elif sys.argv[1] == 'cp' or sys.argv[1] == "copy":
-            iam.copy(hosts, sys.argv)
+            iam.copy()
         else:
             # Normal connect or search
-            iam.setup_session(sys.argv, hosts)
+            iam.setup_session()
     else:
         # Nothing is defined - show help
         print("\t# -------------------------------------------------"
