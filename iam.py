@@ -401,11 +401,12 @@ class IAM(object):
                     print("Host {} could not be found".format(host))
                     sys.exit()
 
-                print("iAM copying from {} to {}".format(host, argv[3]))
+                print("iAM copying from {} to {}".format(session, argv[3]))
 
                 # Copy files "scp mtuz243@bpmprd01.its.auckland.ac.nz:/path/to/file"
-                os.system("scp {user}@{host}:{path} {destination}".format(user=username, host=session, path=path,
-                                                                          destination=argv[3]))
+                os.system(
+                    "scp {user}@{hostname}:{path} {local}".format(user=username, hostname=session, path=path,
+                                                                  local=argv[3]))
 
             elif '!' in argv[3]:
                 connection = argv[3].split(':')
@@ -417,11 +418,11 @@ class IAM(object):
                     print("Host {} could not be found".format(host))
                     sys.exit()
 
-                print("iAM copying from {} to {}".format(argv[2], host))
+                print("iAM copying from {} to {}".format(argv[2], session))
 
                 # Copy files "scp mtuz243@bpmprd01.its.auckland.ac.nz:/path/to/file"
-                os.system("scp {local} {user}@{host}:{path}".format(user=username, host=session, path=path,
-                                                                    local=argv[2]))
+                os.system("scp {local} {user}@{hostname}:{path}".format(user=username, hostname=session, path=path,
+                                                                        local=argv[2]))
             else:
                 print("Please reference an alias or id. Example: !alias, or /41.")
         else:
