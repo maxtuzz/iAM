@@ -413,7 +413,7 @@ class IAM(object):
 
                 print("iAM copying from {} to {}".format(session, self.argv[3]))
 
-                # Copy files "scp mtuz243@bpmprd01.its.auckland.ac.nz:/path/to/file"
+                # Copy file
                 os.system(
                     "scp {user}@{hostname}:{path} {local}".format(user=username, hostname=session, path=path,
                                                                   local=self.argv[3]))
@@ -430,7 +430,7 @@ class IAM(object):
 
                 print("iAM copying from {} to {}".format(self.argv[2], session))
 
-                # Copy files "scp mtuz243@bpmprd01.its.auckland.ac.nz:/path/to/file"
+                # Copy file
                 os.system("scp {local} {user}@{hostname}:{path}".format(user=username, hostname=session, path=path,
                                                                         local=self.argv[2]))
             else:
