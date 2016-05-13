@@ -249,7 +249,7 @@ class IAM(object):
         self.format()
 
     # Remove by group
-    def removegroup(self):
+    def remove_group(self):
         hits = 0
 
         # Delete parsed group
@@ -481,7 +481,7 @@ if __name__ == '__main__':
             # Remove session
             iam.remove()
         elif sys.argv[1] == '-rg' or sys.argv[1] == "remove-group":
-            iam.removegroup()
+            iam.remove_group()
         elif sys.argv[1] == 'cp' or sys.argv[1] == "copy":
             iam.copy()
         else:
