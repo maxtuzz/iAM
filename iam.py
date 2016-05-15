@@ -107,17 +107,17 @@ class IAM(object):
         try:
             session_id = int(host)
 
-            for group, entry in self.session_list.items():
-                for i in range(len(entry)):
-                    if entry[i]["id"] == str(session_id):
-                        session = entry[i]["hostname"]
+            for group, entries in self.session_list.items():
+                for entry in entries:
+                    if entry["id"] == str(session_id):
+                        session = entry["hostname"]
         except ValueError:
             # Session based on ID not found, assuming name was parsed
             if not session:
-                for group, entry in self.session_list.items():
-                    for i in range(len(entry)):
-                        if entry[i]["name"] == host:
-                            session = entry[i]["hostname"]
+                for group, entries in self.session_list.items():
+                    for entry in entries:
+                        if entry["name"] == host:
+                            session = entry["hostname"]
         return session
 
     # ---------------------------
@@ -166,12 +166,12 @@ class IAM(object):
         host_id = 0
 
         # First get latest ID and check if alias exits
-        for group, entry in self.session_list.items():
-            for i in range(len(entry)):
+        for group, entries in self.session_list.items():
+            for entry in entries:
                 host_id += 1
 
                 # Check if alias exists
-                if entry[i]["name"] == name:
+                if entry["name"] == name:
                     # Print error
                     print(
                         "ERROR: Name '{name}' already exists in group '{group}', please try something different".format(
@@ -183,10 +183,10 @@ class IAM(object):
         a_dict = None
 
         # Add to file
-        for group, entry in self.session_list.items():
+        for group, entries in self.session_list.items():
             # Group found
             if group == group_name:
-                entry.append(
+                entries.append(
                     {
                         'id': str(host_id),
                         'name': name,
@@ -194,7 +194,7 @@ class IAM(object):
                     }
                 )
 
-                a_dict = {group_name: entry}
+                a_dict = {group_name: entries}
 
                 # Break out of loop
                 break
@@ -229,12 +229,12 @@ class IAM(object):
 
         # Delete first entry of parsed id/alias
         if len(self.argv) > 2:
-            for group, entry in self.session_list.items():
-                for i in range(len(entry)):
-                    if entry[i]["id"] == to_remove or entry[i]["name"] == to_remove:
+            for group, entries in self.session_list.items():
+                for entry in entries:
+                    if entry["id"] == to_remove or entry["name"] == to_remove:
                         # Increment hits
                         hits += 1
-                        del entry[i]
+                        del entry
 
                         # Break out of loop
                         break
@@ -254,7 +254,7 @@ class IAM(object):
 
         # Delete parsed group
         if len(self.argv) > 2:
-            for group, entry in self.session_list.items():
+            for group, entries in self.session_list.items():
                 if group == self.argv[2]:
                     # Increment hits
                     hits += 1
@@ -289,14 +289,14 @@ class IAM(object):
         results = []
 
         # Find results
-        for group, entry in self.session_list.items():
-            for i in range(len(entry)):
-                if item in entry[i]["hostname"]:
+        for group, entries in self.session_list.items():
+            for entry in entries:
+                if item in entry["hostname"]:
                     # Increment hits
                     hits += 1
 
                     # Append results
-                    results.append([entry[i]["id"], entry[i]["name"], entry[i]["hostname"]])
+                    results.append([entry["id"], entry["name"], entry["hostname"]])
 
         # Output results
         self.output(results, hits)
@@ -314,26 +314,26 @@ class IAM(object):
         if len(self.argv) > 2:
             print("Listing group '{group}':".format(group=self.argv[2]))
 
-            for group, entry in self.session_list.items():
-                for i in range(len(entry)):
+            for group, entries in self.session_list.items():
+                for entry in entries:
                     if group == self.argv[2]:
                         # Increment hits
                         hits += 1
 
                         # Append results
-                        results.append([entry[i]["id"], entry[i]["name"], entry[i]["hostname"]])
+                        results.append([entry["id"], entry["name"], entry["hostname"]])
 
             # Output results
             self.output(results, hits)
         else:
             # List everything
-            for group, entry in self.session_list.items():
-                for i in range(len(entry)):
+            for group, entries in self.session_list.items():
+                for entry in entries:
                     # Increment hits
                     hits += 1
 
                     # Append results
-                    results.append([entry[i]["id"], entry[i]["name"], entry[i]["hostname"]])
+                    results.append([entry["id"], entry["name"], entry["hostname"]])
 
             # Output results
             self.output(results, hits)
@@ -345,10 +345,10 @@ class IAM(object):
         hits = 0
 
         # For every entry, increment and set id
-        for group, entry in self.session_list.items():
-            for i in range(len(entry)):
+        for group, entries in self.session_list.items():
+            for entry in entries:
                 # Set id
-                entry[i]["id"] = str(hits)
+                entry["id"] = str(hits)
 
                 # Increment hits
                 hits += 1
