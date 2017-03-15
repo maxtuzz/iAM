@@ -8,6 +8,7 @@ Used in production daily.
 Development progressing.
 
 Roadmap:
+* Why the hell aren't I using a hashmap when I have perfectly good unique identifiers? 
 * More customization - full path to `ssh` and `ssh-copy-id` need to be configurable in properties in case these protocols aren't included within a users path correctly - or a user prefers to use a custom SSH implementation.
 * Testing and bugfixes.
 * Fully implemented ssh functionality for better cross-system compatibility (possibly).
