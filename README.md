@@ -1,14 +1,12 @@
 # iAM
-A simple, lightweight, SSH session manager tool
+A simple, lightweight, SSH host management tool
 
-The goal of this project is first and foremost to provide efficient methodologies in the maintenance and management of SSH sessions. This application was developed to mitigate and reduce the time spent in remotely connecting to specific hosts through various automated approaches. iAM provides an elegant, and simple solution to group, connect, tunnel and manage ssh-keys between hosts.
+The goal of this project is first and foremost to provide efficient methodologies in the maintenance and management of SSH hosts. This small CLI was developed to mitigate and reduce the time spent in remotely connecting to specific hosts through various automated approaches. iAM provides an elegant, and simple solution to group, connect, tunnel and manage ssh-keys between hosts.
 
 #### Status:
 Used in production daily.
-Development progressing.
 
 Roadmap:
-* Why the hell aren't I using a hashmap when I have perfectly good unique identifiers? 
 * More customization - full path to `ssh` and `ssh-copy-id` need to be configurable in properties in case these protocols aren't included within a users path correctly - or a user prefers to use a custom SSH implementation.
 * Testing and bugfixes.
 * Fully implemented ssh functionality for better cross-system compatibility (possibly).
