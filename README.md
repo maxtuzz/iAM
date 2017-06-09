@@ -11,14 +11,6 @@ Roadmap:
 * Testing and bugfixes.
 * Fully implemented ssh functionality for better cross-system compatibility (possibly).
 
-## Why iAM is useful:
-For those working in distributed environments, a lot of time spent is remotely connecting to specific hosts. There are some solutions at play that can be utilized:
-1. Look up servers in company documentation to remind yourself (or memorize hostnames).
-2. Use a GUI like RemoteNG or Putty which works great, but is hard to customize and setup for preferred use. You also have to manually search down a list before your eye catches on the service you are looking for which is time consuming.
-3. Compile a list of hosts and search through list for keywords you remember about the host name .
-4. Use your command history to search for previous sessions connected to.
-
-iAM seeks to remedy this through providing a easy-to-use, terminal-based solution, designed for speed and a low gulf-of-execution.
 ## Quick start from release
 ##### Linux/MacOS:
 1. Head to the [releases page](https://github.com/maxtuzz/iAM/releases).
@@ -94,28 +86,27 @@ Supported table formats are:
 
 ## Simple Use-Case
 
-I am given a task to do a simple application upgrade of ‘graduate search’ app on astwebrttst01.its.auckland.ac.nz. I have never utilized this server before, as such I will have to add it to my host list.
 ```
-$ iam -a astwebrttst01.its.auckland.ac.nz asttst1 AST
+$ iam -a appserver.test.mydomain.com apptst host_group
 ```
 This command follows the following format …
 [Host address] [Host short name (alias)] [Host Group]
 
-So essentially we are asking the iam application to add an SSH host, with a specified name and a specified group we want to add it to. In this case we are adding it to the “AST” group - where all AST based servers will be listed.
+So essentially we are asking the iam application to add an SSH host, with a specified name and a specified group we want to add it to. In this case we are adding it to the “host_group” group - where all 'host_group' based servers will be listed.
 
 But we've forgotten this long hostname already.
 
 ```
-$ iam ast
+$ iam app
 
-Searching for ‘ast’ ..
-[30], asttst1, astwebrttst01.its.auckland.ac.nz
+Searching for ‘app’ ..
+[30], apptst, appserver.test.mydomain.com
 
 $ iam 30
 ```
 
-(or of course, `$ iam asttest1`)
-`iAM now astwebrttst01.its.auckland.ac.nz...`
+(or of course, `$ iam apptst`)
+`iAM now appserver.test.mydomain.com...`
 
 NOTE: You can use `$ iam 30 [USERNAME]` to connect under a different user other than what is specified in config.json
 
