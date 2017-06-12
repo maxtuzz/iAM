@@ -21,21 +21,11 @@
       "hostname" : "maxtuzzbackenddev01.ac.nz"
     }
   ],
-  "subversion_servers": [
+  "bitbucket_servers": [
     {
       "id" : "4",
-      "name" : "svn1",
+      "name" : "bit1",
       "hostname" : "subversion1.ac.nz"
-    },
-    {
-      "id" : "5",
-      "name" : "svn2",
-      "hostname" : "subversion2.ac.nz"
-    },
-    {
-      "id" : "6",
-      "name" : "svn3",
-      "hostname" : "subversion3.ac.nz"
     }
   ]
 }
