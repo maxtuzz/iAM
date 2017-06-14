@@ -13,8 +13,8 @@ Roadmap:
 
 ## Quick start from release
 ##### Linux/MacOS:
-1. Head to the [releases page](https://github.com/maxtuzz/iAM/releases).
-2. Download 'iam.tar.gz'.
+1. Head to the [releases page](https://github.com/maxtuzz/iAM/releases)
+2. Download 'iam.tar.gz'
 3. Extract with your favorite tool or through command line with `$ tar zxvf iam.tar.gz`
 4. Run iam and create your default user `$ ./iam config user [username]`
 5. Symlink to /usr/bin/local so that it is accessible anywhere `$ sudo ln -s {path_to_iam} /usr/local/bin/iam`
