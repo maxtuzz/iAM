@@ -1,7 +1,7 @@
 # iAM
 A simple, lightweight, SSH host management tool
 
-The goal of this project is first and foremost to provide efficient methodologies in the maintenance and management of SSH hosts. This small CLI was developed to mitigate and reduce the time spent in remotely connecting to specific hosts through various automated approaches. iAM provides an elegant, and simple solution to group, connect, tunnel and manage ssh-keys between hosts.
+The goal of this project is to provide efficient methodologies in the maintenance and management of SSH hosts. This small CLI was developed to mitigate and reduce the time spent in remotely connecting to specific hosts through various automated approaches. iAM provides an elegant, and simple solution to group, connect, tunnel and manage ssh-keys between hosts.
 
 #### Status:
 Used in production daily.
