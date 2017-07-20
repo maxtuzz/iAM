@@ -114,8 +114,6 @@ This is but a simple use case. First we search for our server keyword that we kn
 
 We can then invoke `$ iam [ID]` to start a session with the address linked to that identifer! Very easy and all with less characters than typing out the actual server address, not to mention searching to find out what it is.
 
-From here on out, all I have to do is memorize the ID, or name of server to connect directly to it. Of course this isn’t ideal, so we can just do our fast search whenever we want.
-
 ### Configuring iAM
 
 To set your default username:
