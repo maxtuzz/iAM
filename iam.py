@@ -5,7 +5,7 @@
 # Developed by Max Tuzzolino-Smith
 # -------------------------------------------------
 
-# __author__ = "Max Tuzzolino-Smith"
+# __author__ = "Max Tuzzolino"
 
 import sys
 import os
